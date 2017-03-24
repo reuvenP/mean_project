@@ -1,0 +1,47 @@
+<!-- Page Heading -->
+
+<div class="login-box">
+    <div class="login-logo">
+        <a href="#/"><b>Admin</b>LTE</a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg">Sign in to start your session</p>
+
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control" id="username" placeholder="Username" ng-model="login.username">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" id="password" class="form-control" placeholder="Password" ng-model="login.password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <input type="hidden" id="random" ng-model="login.random" ng-init="login.random=<%- random %>" />
+            <div class="row">
+                <div class="col-xs-8">
+                    <input type="checkbox" id="rememberMe">
+                    <label for="rememberMe">&nbsp;</label>Remember Me
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-4">
+                    <button ng-click="login.login()" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                </div>
+                <!-- /.col -->
+            </div>
+
+        <!--<div class="social-auth-links text-center">-->
+            <!--<p>- OR -</p>-->
+            <!--<a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using-->
+                <!--Facebook</a>-->
+            <!--<a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using-->
+                <!--Google+</a>-->
+        <!--</div>-->
+        <!-- /.social-auth-links -->
+        <br/>
+        <a href="javascript:;" ng-click="login.forgotPassword()">I forgot my password</a><br /><br />
+        <a href="register.html" class="text-center">Register a new membership</a>
+    </div>
+    <!-- /.login-box-body -->
+</div>
+
+

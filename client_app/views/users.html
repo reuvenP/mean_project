@@ -1,0 +1,57 @@
+<div class="row" ng-show="users.mainData.myUser">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Responsive Hover Table</h3>
+
+                <div class="box-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover">
+                    <tbody>
+                    <tr>
+                        <th>Apartment</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Username</th>
+                        <th>Admin?</th>
+                        <th ng-show="users.mainData.myUser.isAdmin">Blocked?</th>
+                        <th>Actions</th>
+                    </tr>
+                    <tr ng-repeat="user in users.usersList | filter: (!users.mainData.myUser.isAdmin ? {isBlocked:false} : '') | orderBy:'apartment'">
+                        <td>{{user.apartment}}</td>
+                        <td><a href="javascript:void(0)">{{user.name}}</a></td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.username}}</td>
+                        <td><span ng-attr-class="{{user.isAdmin && 'glyphicon glyphicon-ok'}}"></span></td>
+                        <td ng-show="users.mainData.myUser.isAdmin"><span ng-attr-class="{{user.isBlocked && 'glyphicon glyphicon-ok'}}"></span></td>
+                        <td>
+                            <button type="button" class="btn btn-primary" ng-hide="!users.mainData.myUser.isAdmin && users.mainData.myUser._id !== user._id" ng-click="users.editUser(user)">
+                                Edit <span class="glyphicon glyphicon-edit"> </span>
+                            </button>
+                            <button type="button" class="btn btn-primary" ng-hide="!users.mainData.myUser.isAdmin || users.mainData.myUser._id === user._id" ng-click="users.deleteUser(user)">
+                                Delete <span class="glyphicon glyphicon-remove"> </span>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+</div>
+
+<button ng-show="users.mainData.myUser.isAdmin" ng-click="users.addUser()" type="button" class="btn btn-primary">Add User <span
+        class="glyphicon glyphicon-plus"></span></button>
+

@@ -1,0 +1,119 @@
+<form class="well form-horizontal" id="contact_form">
+    <fieldset>
+
+        <!-- Form Name -->
+        <legend>Neighbor Details <span class="close" ng-click="userDetails.cancel()">&times;</span></legend>
+
+        <!-- Text input-->
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">Name</label>
+            <div class="col-md-7 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input placeholder="Neighbor name" class="form-control" type="text"
+                           ng-model="userDetails.user.name">
+                </div>
+            </div>
+        </div>
+
+        <!-- Text input-->
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">Username</label>
+            <div class="col-md-7 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input placeholder="Username" class="form-control" type="text"
+                           ng-model="userDetails.user.username">
+                </div>
+            </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group">
+            <label class="col-md-3 control-label">Password</label>
+            <div class="col-md-7 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    <input placeholder="Enter new password" class="form-control" type="password"
+                           ng-model="userDetails.rawPassword">
+                </div>
+            </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group">
+            <label class="col-md-3 control-label">E-Mail</label>
+            <div class="col-md-7 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                    <input name="email" placeholder="E-Mail Address" class="form-control" type="text"
+                           ng-model="userDetails.user.email">
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Text input-->
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">Phone #</label>
+            <div class="col-md-7 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
+                    <input placeholder="(845) 555-1212" class="form-control" type="text"
+                           ng-model="userDetails.user.phone">
+                </div>
+            </div>
+        </div>
+
+        <!-- Text input-->
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">Apartment</label>
+            <div class="col-md-7 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+                    <input class="form-control" type="number"
+                           ng-model="userDetails.user.apartment">
+                </div>
+            </div>
+        </div>
+
+        <!-- Text input-->
+
+        <div ng-show="userDetails.mainData.myUser.isAdmin && userDetails.mainData.myUser._id !== userDetails.user._id" class="form-group">
+            <label class="col-md-3 control-label">Admin?</label>
+            <div class="col-md-7 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon input-group-addon-cb"><i class="glyphicon glyphicon-king"></i></span>&nbsp;
+                    <input id="isAdmin" type="checkbox" ng-model="userDetails.user.isAdmin">
+                    <label for="isAdmin">&nbsp</label>
+                </div>
+            </div>
+        </div>
+
+        <div ng-show="!userDetails.newUser && userDetails.mainData.myUser.isAdmin && userDetails.mainData.myUser._id !== userDetails.user._id" class="form-group">
+            <label class="col-md-3 control-label">Blocked?</label>
+            <div class="col-md-7 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon input-group-addon-cb"><i class="icon fa fa-ban"></i></span>&nbsp;
+                    <input type="checkbox" id="isBlocked" ng-model="userDetails.user.isBlocked" ng-true-value="true" ng-false-value="false">
+                    <label for="isBlocked">&nbsp</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- <Button> -->
+        <div class="form-group">
+            <label class="col-md-3 control-label"></label>
+            <div class="col-md-7">
+                <button ng-click="userDetails.ok()" type="button" class="btn btn-warning">Save <span
+                        class="glyphicon glyphicon-send"></span></button>
+            </div>
+        </div>
+
+    </fieldset>
+</form>
+
