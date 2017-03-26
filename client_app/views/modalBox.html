@@ -1,0 +1,30 @@
+<div class="box {{'box-' + modal.modalType}} box-solid">
+    <div class="box-header with-border">
+        <h3 class="box-title">{{modal.header}}</h3>
+
+        <div class="box-tools pull-right">
+            <button type="button" class="close" ng-click="modal.cancel()" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+            </button>
+        </div>
+        <!-- /.box-tools -->
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        {{modal.message}}
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer">
+        <div class="pull-left"></div>
+        <div ng-repeat="title in modal.closeTitles" class="col-sm-2 text-center">
+            <button type="button" class="btn {{'btn-' + modal.modalType}} btn-block"
+                    ng-click="modal.close(title)" aria-label="Close">{{title}}</button>
+        </div>
+        <div ng-show="modal.cancelTitle" class="col-sm-2 text-center">
+            <button type="button" class="btn {{'btn-' + modal.modalType}} btn-block"
+                    ng-click="modal.cancel()" aria-label="Close">{{modal.cancelTitle}}</button>
+        </div>
+    </div>
+    <!-- /.box-footer -->
+</div>
+<!-- /.box -->

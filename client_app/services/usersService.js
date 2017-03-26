@@ -95,7 +95,7 @@ function usersService($http, $q, $uibModal) {
         var modal = $uibModal.open({
             animation: true,
             backdrop: 'static',
-            windowsClass: 'btn btn-warning',
+            windowsClass: 'center-modal',
             size: 'md',
             templateUrl: '/client_app/views/editUser.html',
             controller: userDetailsCtrl,

@@ -1,8 +1,24 @@
 var express = require('express');
 var router = express.Router();
-var email = require('../modules/email');
+var login = require('../modules/login');
 var users = require('../modules/dal_users');
+var email = require('../modules/email');
 var debug = require('debug')('nodejs-project:login');
+
+//login link
+router.post('/enter', function (req, res, next) {
+    login.authenticator(req, res, next);
+});
+
+//logout link
+router.get('/exit', function (req, res, next) {
+    debug('logging out');
+    req.logout();
+    req.session.regenerate(function (err) {
+        debug('logged out');
+        res.redirect('/');
+    });
+});
 
 router.get('/getLoggedInUser', function(req, res,next) {
     if (!req.user) {

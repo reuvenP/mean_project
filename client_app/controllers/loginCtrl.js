@@ -2,9 +2,13 @@ angular.module('myApp').controller('loginCtrl', ['$scope', 'pageService', 'users
 function loginCtrl($scope, pageService, usersService, loginService){
     var vm = this;
     vm.mainData = pageService.mainData;
+    pageService.setPageTitle('Login');
     $('.side-nav li').removeClass('active');
 
     vm.login = function() {
+        if (!vm.username) {
+            return pageService.showAlert('Please enter username', 'warning');
+        }
         var hash = CryptoJS.SHA1(vm.username + ':' + vm.password + ':' + vm.random);
         var hash_Base64 = hash.toString(CryptoJS.enc.Base64);
         loginService.login(vm.username, hash_Base64).then(
@@ -20,6 +24,9 @@ function loginCtrl($scope, pageService, usersService, loginService){
     };
 
     vm.forgotPassword = function() {
+        if (!vm.username) {
+            return pageService.showAlert('Please enter username', 'warning');
+        }
         loginService.forgotPassword(vm.username).then(
             function(res) {
                 pageService.showAlert(res.data, 'info');

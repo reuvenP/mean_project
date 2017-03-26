@@ -2,6 +2,7 @@ angular.module('myApp').controller('homeCtrl', ['$scope', '$routeParams', 'pageS
 function homeCtrl($scope, $routeParams, pageService, usersService) {
     var vm = this;
     vm.mainData = pageService.mainData;
+    pageService.setPageTitle('Dashboard');
 
     $.getScript("/public/js/pages/dashboard2.js");
 
@@ -12,10 +13,10 @@ function homeCtrl($scope, $routeParams, pageService, usersService) {
                 usersService.editUser(updatedUser).then(function(newUser) {
                     vm.mainData.myUser = newUser;
                     pageService.setNextAlert($scope, 'Your user updated successfully', 'success', 'Success');
-                    window.location = '/#/home';
+                    window.location.href  = '/#/home';
                 }, function (res) {
                     pageService.setNextAlert($scope, res.data, 'danger', 'Error');
-                    window.location = '/#/home';
+                    window.location.href  = '/#/home';
                 })}
         );
     }

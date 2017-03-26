@@ -7,6 +7,14 @@ function mainCtrl($scope, pageService, loginService) {
         pageService.clearAlert();
     };
 
+    vm.logout = function() {
+        loginService.logout().finally(
+            function() {
+                window.location.href  = "/";
+            }
+        )
+    };
+
     $scope.$on('$locationChangeStart', function(event) {
         pageService.clearAlert();
     });

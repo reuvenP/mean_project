@@ -1,5 +1,5 @@
-angular.module('myApp').factory('pageService', ['$http', '$q', pageService]);
-function pageService($http, $q) {
+angular.module('myApp').factory('pageService', ['$http', '$q', '$uibModal', pageService]);
+function pageService($http, $q, $uibModal) {
     var services = {};
     services.mainData = {};
 
@@ -34,6 +34,41 @@ function pageService($http, $q) {
         delete(services.mainData.alert);
         delete(services.mainData.alertType);
         delete(services.mainData.alertTitle);
+    };
+
+    services.setPageTitle = function(pageHeader, pageDescription) {
+        services.mainData.pageHeader = pageHeader;
+        if (pageDescription) {
+            services.mainData.pageDescription = pageDescription;
+        }
+        else {
+            delete(services.mainData.pageDescription);
+        }
+    };
+
+    services.openModal = function(header, message, closeTitles, cancelTitle, modalType) {
+        var modal = $uibModal.open({
+            animation: true,
+            backdrop: false,
+            windowsClass: 'center-modal',
+            size: 'md',
+            templateUrl: '/client_app/views/modalBox.html',
+            controller: modalCtrl,
+            controllerAs: 'modal',
+            resolve: {
+                modalDetails: function() {
+                    return {
+                        header: header,
+                        message: message,
+                        closeTitles: closeTitles,
+                        cancelTitle: cancelTitle,
+                        modalType: modalType
+                    };
+                }
+            }
+        });
+
+        return modal.result;
     };
 
     return services;

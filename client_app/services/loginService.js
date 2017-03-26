@@ -5,8 +5,16 @@ function loginService($http, $q, pageService) {
     services.login = function(username, hashedLogin) {
         var req = {
             method: 'POST',
-            url: '/login',
+            url: '/login/enter',
             data: {username: username, hashedLogin: hashedLogin}
+        };
+        return $http(req);
+    };
+
+    services.logout = function(username, hashedLogin) {
+        var req = {
+            method: 'GET',
+            url: '/login/exit'
         };
         return $http(req);
     };

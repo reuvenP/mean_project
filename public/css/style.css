@@ -1,0 +1,27 @@
+.box.box-solid.box-default .box-footer {
+    border-top-color: #d2d6de;
+}
+
+.box.box-solid.box-primary .box-footer {
+    border-top-color: #357ca5;
+}
+
+.box.box-solid.box-info .box-footer {
+    border-top-color: #00c0ef;
+}
+
+.box.box-solid.box-success .box-footer {
+    border-top-color: #008d4c;
+}
+
+.box.box-solid.box-warning .box-footer {
+    border-top-color: #f39c12;
+}
+
+.box.box-solid.box-danger .box-footer {
+    border-top-color: #d33724;
+}
+
+.modal-content .box {
+    border-radius: 0;
+}
