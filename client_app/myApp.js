@@ -30,12 +30,3 @@ app.config(function ($routeProvider) {
             redirect: '/'
         });
 });
-
-function findMainCtrl($scope) {
-    while ($scope && (!$scope.main || $scope.main.constructor.name !== 'mainCtrl')) {
-        $scope = $scope.$parent;
-    }
-    if ($scope) {
-        return $scope.main;
-    }
-}
