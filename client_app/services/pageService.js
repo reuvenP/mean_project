@@ -71,5 +71,11 @@ function pageService($http, $q, $uibModal) {
         return modal.result;
     };
 
+    services.refreshMyUserIfNeeded = function(user) {
+        if (services.mainData.myUser && services.mainData.myUser._id === user._id) {
+            services.mainData.myUser = user;
+        }
+    };
+
     return services;
 }

@@ -55,6 +55,7 @@ function usersController($scope, pageService, usersService) {
         modal.then(function(userResult) {
             usersService.editUser(userResult).then(
                 function (res) {
+                    pageService.refreshMyUserIfNeeded(userResult);
                     pageService.showAlert('User updated successfully', 'success', 'Success');
                 }, function (res) {
                     pageService.showAlert(res.status + ' - ' + res.statusText + ": " + (res.data.message || res.data.errmsg || res.data), 'danger', 'Error');

@@ -134,7 +134,8 @@ desired effect
                     <a href="javascript:;">
                       <div class="pull-left">
                         <!-- User Image -->
-                        <img src="public/img/dan.jpg" class="img-circle" alt="User Image">
+                        <img ng-attr-src="{{main.mainData.myUser && main.mainData.myUser.image ? main.mainData.myUser.image : 'public/img/user_avatar.png'}}"
+                             class="img-circle" alt="User Image">
                       </div>
                       <!-- Message title and timestamp -->
                       <h4>
@@ -218,7 +219,7 @@ desired effect
             <!-- Menu Toggle Button -->
             <a ng-show="main.mainData.myUser" href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
-              <img src="public/img/dan.jpg" class="user-image" alt="User Image">
+              <img ng-attr-src="{{main.mainData.myUser.image || 'public/img/user_avatar.png'}}" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
               <span class="hidden-xs">{{main.mainData.myUser.name}}</span>
             </a>
@@ -231,7 +232,7 @@ desired effect
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="public/img/dan.jpg" class="img-circle" alt="User Image">
+                <img ng-attr-src="{{main.mainData.myUser.image || 'public/img/user_avatar.png'}}" class="img-circle" alt="User Image">
 
                 <p>
                   {{main.mainData.myUser.name}}
@@ -281,8 +282,7 @@ desired effect
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img ng-show="main.mainData.myUser" src="public/img/dan.jpg" class="img-circle" alt="User Image">
-          <img ng-show="!main.mainData.myUser" src="public/img/user_avatar.png" class="img-circle" alt="User Image">
+          <img ng-attr-src="{{main.mainData.myUser && main.mainData.myUser.image ? main.mainData.myUser.image : 'public/img/user_avatar.png'}}" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
           <p>{{main.mainData.myUser ? main.mainData.myUser.name : 'Guest'}}</p>

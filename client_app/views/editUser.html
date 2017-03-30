@@ -5,6 +5,25 @@
         <legend>Neighbor Details <span class="close" ng-click="userDetails.cancel()">&times;</span></legend>
 
         <!-- Text input-->
+        <div class="form-group">
+            <label class="col-md-3 control-label"></label>
+            <div class="col-md-7 inputGroupContainer">
+                <img ng-attr-src="{{userDetails.userImage}}" class="profile-user-img img-responsive img-circle" height="128" width="128" alt="User profile picture">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 control-label"></label>
+            <div class="col-md-7 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-floppy-open"></i></span>
+                    <label class="btn btn-warning btn-block btn-file">
+                        Load Image...
+                        <input type="file" style="display: none;" name="imageFile" id="imageFile" ng-file-select on-file-selection="userDetails.onFileSelection">
+                    </label>
+                </div>
+            </div>
+        </div>
 
         <div class="form-group">
             <label class="col-md-3 control-label">Name</label>

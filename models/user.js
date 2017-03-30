@@ -22,6 +22,7 @@ var User = db.model('User', new Schema({
     email: {type: String, required: true, unique: true},
     phone: {type: String, default: null},
     apartment: {type: Number, default: null},
+    image: {type: String, default: null},
     recoveryNumber: {type: Number, default: null},
     isAdmin: {type: Boolean, default: false},
     isBlocked: {type: Boolean, default: false},
