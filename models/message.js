@@ -22,16 +22,14 @@ var Message = db.model('Message', new Schema({
     sender: String,
     submitDate: Date,
     room: String,
-    content: {
-        text: String,
-        link: String,
-        img: {data: Buffer, contentType: String}
-    },
+    text: String,
+    link: String,
+    img: {data: Buffer, contentType: String},
     isOnlyForConnected: Boolean,
-    vote: {
+    votes: [{
         isPositive: Boolean,
         ip: String
-    }
+    }]
 }));
 
 module.exports = Message;
