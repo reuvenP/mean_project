@@ -35,6 +35,12 @@ var getLastTwentyMsgsOfRoom = function (roomId, then) {
     })
 };
 
+var getMsgsByRoom = function (roomId, then) {
+    Message.find({room: roomId}, function (err, msgs) {
+        return then(err, msgs);
+    })
+};
+
 var exporter = {};
 exporter.addRoom = addRoom;
 exporter.getRooms = getRooms;
