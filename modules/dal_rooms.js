@@ -41,9 +41,16 @@ var getMsgsByRoom = function (roomId, then) {
     })
 };
 
+var getRoomById = function (roomId, then) {
+    Room.findById(roomId, function (err, room) {
+        return then(null, room);
+    })
+};
+
 var exporter = {};
 exporter.addRoom = addRoom;
 exporter.getRooms = getRooms;
 exporter.getLastTwentyMsgsOfRoom = getLastTwentyMsgsOfRoom;
 exporter.getMsgsByRoom = getMsgsByRoom;
+exporter.getRoomById = getRoomById;
 module.exports = exporter;
