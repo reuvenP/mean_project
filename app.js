@@ -9,6 +9,7 @@ var mongoose = require('mongoose');
 var debug = require('debug')('nodejs-project:app');
 var connectMongo = require('connect-mongo');
 var passport = require('passport');
+var configSocketIo = require('./modules/socket-io-server');
 
 var MongoStore = connectMongo(session);
 var sessConnStr = "mongodb://localhost/project_sessions";
@@ -25,6 +26,9 @@ process.on('SIGINT', function() { sessionConnect.close(function () { process.exi
 sessionConnect.open(sessConnStr);
 
 var app = express();
+app.httpServerReady = function(httpServer) {
+    configSocketIo(httpServer);
+};
 
 // view engine setup
 app.set('views', path.join(__dirname, 'ejs_templates'));
@@ -53,7 +57,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 var root = require('./routes/root');
-var login = require('./routes/loginRoute')
+var login = require('./routes/loginRoute');
 var users = require('./routes/usersRoute');
 var messages = require('./routes/messagesRoute');
 
