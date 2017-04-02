@@ -45,4 +45,5 @@ var exporter = {};
 exporter.addRoom = addRoom;
 exporter.getRooms = getRooms;
 exporter.getLastTwentyMsgsOfRoom = getLastTwentyMsgsOfRoom;
+exporter.getMsgsByRoom = getMsgsByRoom;
 module.exports = exporter;
