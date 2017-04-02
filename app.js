@@ -59,12 +59,12 @@ app.use(passport.session());
 var root = require('./routes/root');
 var login = require('./routes/loginRoute');
 var users = require('./routes/usersRoute');
-var messages = require('./routes/messagesRoute');
+var chat = require('./routes/chatRoute');
 
 app.use('/', root);
 app.use('/login', login);
 app.use('/users', users);
-app.use('/messages', messages);
+app.use('/chat', chat);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

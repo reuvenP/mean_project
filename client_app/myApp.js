@@ -20,6 +20,12 @@ app.config(function ($routeProvider) {
             controllerAs: 'users'
         })
 
+        .when('/chat', {
+            templateUrl: '/client_app/views/chat.html',
+            controller: 'chatController',
+            controllerAs: 'chat'
+        })
+
         .when('/', {
             templateUrl: '/client_app/views/home.html',
             controller: 'homeCtrl',
