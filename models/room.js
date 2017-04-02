@@ -1,5 +1,5 @@
 /**
- * Created by reuvenp on 3/15/2017.
+ * Created by reuvenp on 4/2/2017.
  */
 var mongo = require("mongoose");
 var Schema = mongo.Schema;
@@ -19,20 +19,10 @@ process.on('SIGINT', function() { db.close(function () { process.exit(0); });});
 db.open(userConnStr);
 
 var ObjectId = Schema.ObjectId;
-var Message = db.model('Message', new Schema({
-    sender: {type: ObjectId, required: true},
-    submitDate: Date,
-    room: {type: ObjectId, required: true},
-    text: String,
-    link: String,
-    img: {data: Buffer, contentType: String},
-    isOnlyForConnected: Boolean,
-    positiveVotes: Number,
-    negativeVotes: Number,
-    votes: [{
-        isPositive: Boolean,
-        ip: String
-    }]
+var Room = db.model('Room', new Schema({
+    name: {type: String, required: true, unique: true},
+    admin: {type: ObjectId, required: true},
+    dateCreated: Date
 }));
 
-module.exports = Message;
+module.exports = Room;
