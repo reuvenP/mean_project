@@ -2,6 +2,8 @@
  * Created by Home on 15/03/2017.
  */
 var Message = require('../models/message');
+var debug = require('debug')('nodejs-project:users');
+var extend = require('util')._extend;
 
 var addMessage = function(sender, room, text, link, img, isOnlyForConnected, then) {
     var message = new Message({
@@ -41,7 +43,7 @@ var getMessages = function (then) {
     });
 };
 
-var getVotes = function (msg, then) {
+var getVotesOfMsg = function (msg, then) {
     if (!msg) return then('message empty', 0, 0);
     var pos = 0, neg = 0;
     for (var i = 0; i < msg.votes.length; i++) {
@@ -84,6 +86,13 @@ var getVotesOfUser = function (user, then) {
     })
 };
 
-
+var exporter = {};
+exporter.addMessage = addMessage;
+exporter.addVote = addVote;
+exporter.getMessages = getMessages;
+exporter.getVotesOfMsg = getVotesOfMsg;
+exporter.getMsgsBySenderBetweenDates = getMsgsBySenderBetweenDates;
+exporter.getVotesOfUser = getVotesOfUser;
+module.exports = exporter;
 
 
