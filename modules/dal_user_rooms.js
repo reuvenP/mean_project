@@ -45,3 +45,10 @@ var confirmRoomUser = function (userId, roomId, then) {
 var pendingRequests = function (adminId, then) {
     //TODO:
 };
+
+var exporter = {};
+exporter.addUserRoom = addUserRoom;
+exporter.getRoomsOfUser = getRoomsOfUser;
+exporter.confirmRoomUser = confirmRoomUser;
+
+module.exports = exporter;
