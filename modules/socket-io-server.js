@@ -28,6 +28,7 @@ var configSocketIo = function(httpServer, session) {
                     for (var i = 0; i < rooms.length; i++) {
                         if (rooms[i].name == room) {
                             console.log('joined room: ' + room);
+                            console.log(socket.rooms);
                             socket.join(room);
                             return;
                         }
@@ -35,7 +36,16 @@ var configSocketIo = function(httpServer, session) {
                     }
                 }
             })
-        })
+        });
+
+        socket.on('leave', function (room) {
+            socket.leave(room);
+        });
+
+        socket.on('publish', function (msg) {
+
+            //socket.broadcast.to(room).emit('my message', msg);
+        });
 
     });
 };

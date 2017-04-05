@@ -4,6 +4,8 @@ function chatService($http, $q) {
     services.rooms = [];
     var socket = io();
     socket.emit('join', 'room1');
+    socket.emit('leave', 'room5');
+
 
     services.getRoom = function (roomId) {
         for (var i = 0; i < services.rooms.length; i++) {
