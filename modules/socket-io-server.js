@@ -28,7 +28,6 @@ var configSocketIo = function(httpServer, session) {
                     for (var i = 0; i < rooms.length; i++) {
                         if (rooms[i].name == room) {
                             console.log('joined room: ' + room);
-                            console.log(socket.rooms);
                             socket.join(room);
                             return;
                         }
@@ -43,8 +42,19 @@ var configSocketIo = function(httpServer, session) {
         });
 
         socket.on('publish', function (msg) {
+            dal_rooms.getRoomById(msg.room, function (err, room) {
+                if (!err) {
+                    if (io.sockets.adapter.sids[socket.id][room.name]) {
+                        dal_messages.addMessage(userId, msg.room, msg.text, msg.link, msg.img, msg.isOnlyForConnected, function (err2) {
+                            if (!err2) {
+                                socket.broadcast.to(room.name).emit('send_msg', msg);
+                            }
+                        })
+                    }
+                }
+            });
 
-            //socket.broadcast.to(room).emit('my message', msg);
+
         });
 
     });

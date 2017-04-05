@@ -5,6 +5,7 @@ function chatService($http, $q) {
     var socket = io();
     socket.emit('join', 'room1');
     socket.emit('leave', 'room5');
+    socket.emit('publish', {room: '58e149540a2d3a0afc7e47de', text:'textrrr', link: 'linkrrr', img: undefined, isOnlyForConnected: false });
 
 
     services.getRoom = function (roomId) {
