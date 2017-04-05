@@ -16,29 +16,18 @@ var addUserRoom = function (userId, roomId, then) {
           counter: 0,
           isConfirmed: false
       });
-      userRooms.save(function (err) {
-          if (err) return then(err);
-          return then();
-      });
+      userRooms.save(then);
 };
 
 var getRoomsOfUser = function (userId, then) {
-    UserRooms.find({userId: userId, isConfirmed: true}, function (err, user_rooms) {
-        if (err) {
-            return then(err, []);
-        }
-        return then(null, user_rooms)
-    })
+    UserRooms.find({userId: userId, isConfirmed: true}, then);
 };
 
 var confirmRoomUser = function (userId, roomId, then) {
     UserRooms.findOne({userId: userId, roomId: roomId}, function (err, userRoom) {
         if (err) return then(err);
         userRoom.isConfirmed = true;
-        userRoom.save(function (err) {
-            if (err) return then(err);
-            return then();
-        })
+        userRoom.save(then);
     })
 };
 

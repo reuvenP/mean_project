@@ -17,10 +17,7 @@ var addMessage = function(senderId, roomId, text, link, img, isOnlyForConnected,
         negativeVotes: 0,
         isOnlyForConnected: isOnlyForConnected
     });
-    message.save(function (err) {
-        if (err) return then(err);
-        then();
-    });
+    message.save(then);
 };
 
 var addVote = function(msg_id, isPositive, ip, then) {
@@ -38,23 +35,17 @@ var addVote = function(msg_id, isPositive, ip, then) {
         else {
             msg.negativeVotes++;
         }
-        msg.save(function (err) {
-            if (err) return then(err);
-            then();
-        })
+
+        msg.save(then);
     });
 };
 
 var getMessages = function (then) {
-    Message.find({}, function (err, msgs) {
-        then(err, msgs);
-    });
+    Message.find({}, then);
 };
 
 var getMsgsBySenderBetweenDates = function (senderId, date_start, date_end, then) {
-    Message.find({sender: senderId, submitDate: {$gte: date_start, $lte: date_end}}, function (err, msgs) {
-        then(err, msgs);
-    })
+    Message.find({sender: senderId, submitDate: {$gte: date_start, $lte: date_end}}, then);
 };
 
 var getVotesOfUser = function (userId, then) {

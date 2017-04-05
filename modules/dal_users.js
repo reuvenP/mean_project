@@ -5,9 +5,7 @@ var extend = require('util')._extend;
 var getUsers = function(onlyNotBlocked, then) {
     var query = onlyNotBlocked ? User.find({isDeleted: {$ne: true}, isBlocked: {$ne: true}}) : User.find({isDeleted: {$ne: true}});
     query.select('-password -recoveryNumber -isDeleted'); //TODO do -password -recoveryNumber in upper level
-    query.exec(function (err, users) {
-        then(err, users);
-    });
+    query.exec(then);
 };
 
 var deleteUser = function(userId, then) {
@@ -15,10 +13,7 @@ var deleteUser = function(userId, then) {
         if (err) return then(err, []);
 
         user.isDeleted = true;
-        user.save(function (err) {
-            if (err) return then(err);
-            then();
-        });
+        user.save(then);
     });
 };
 

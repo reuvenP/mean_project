@@ -12,16 +12,11 @@ var addRoom = function (name, adminId, then) {
         admin: adminId,
         dateCreated: new Date()
     });
-    room.save(function (err) {
-        if (err) return then(err);
-        return then();
-    })
+    room.save(then);
 };
 
 var getRooms = function (then) {
-    Room.find({}, function (err, rooms) {
-        return then(err, rooms);
-    })
+    Room.find({}, then);
 };
 
 var getLastTwentyMsgsOfRoom = function (roomId, then) {
@@ -36,15 +31,11 @@ var getLastTwentyMsgsOfRoom = function (roomId, then) {
 };
 
 var getMsgsByRoom = function (roomId, then) {
-    Message.find({room: roomId}, function (err, msgs) {
-        return then(err, msgs);
-    })
+    Message.find({room: roomId}, then);
 };
 
 var getRoomById = function (roomId, then) {
-    Room.findById(roomId, function (err, room) {
-        return then(null, room);
-    })
+    Room.findById(roomId, then);
 };
 
 var exporter = {};
