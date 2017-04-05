@@ -26,9 +26,7 @@ process.on('SIGINT', function() { sessionConnect.close(function () { process.exi
 sessionConnect.open(sessConnStr);
 
 var app = express();
-app.httpServerReady = function(httpServer) {
-    configSocketIo(httpServer);
-};
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'ejs_templates'));
@@ -43,7 +41,7 @@ app.use(cookieParser());
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/client_app', express.static(path.join(__dirname, 'client_app')));
 
-app.use(session({
+var shared_session = session({
     name: 'myapp.sid',
     secret: "my special secret",
     resave: false,
@@ -51,7 +49,12 @@ app.use(session({
     rolling: true,
     store: new MongoStore({ mongooseConnection: sessionConnect }),
     cookie: { maxAge: 3600000, httpOnly: true, sameSite: true }
-}));
+})
+app.use(shared_session);
+
+app.httpServerReady = function(httpServer) {
+    configSocketIo(httpServer, shared_session);
+};
 
 app.use(passport.initialize());
 app.use(passport.session());

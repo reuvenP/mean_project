@@ -2,6 +2,8 @@ angular.module('myApp').factory('chatService', ['$http', '$q', chatService]);
 function chatService($http, $q) {
     var services = {};
     services.rooms = [];
+    var socket = io();
+    socket.emit('join', 'room1');
 
     services.getRoom = function (roomId) {
         for (var i = 0; i < services.rooms.length; i++) {

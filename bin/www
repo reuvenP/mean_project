@@ -20,9 +20,7 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-if (app.httpServerReady && typeof app.httpServerReady === "function") {
-  app.httpServerReady(server);
-}
+
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -90,4 +88,7 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  if (app.httpServerReady && typeof app.httpServerReady === "function") {
+      app.httpServerReady(server);
+  }
 }
