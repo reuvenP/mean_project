@@ -1,28 +1,25 @@
 angular.module('myApp').factory('chatService', ['$http', '$q', chatService]);
 function chatService($http, $q) {
     var services = {};
-    //var roomsMessages = [];
-    //services.roomsMessages.push({roomId: 123, roomMessages: [{text: 'Hello 123!'}]});
-    //services.roomsMessages.push({roomId: 456, roomMessages: [{text: 'Hello 456!'}]});
-
     services.rooms = [];
 
-    services.getMessagesList = function (roomId) {
+    services.getRoom = function (roomId) {
         for (var i = 0; i < services.rooms.length; i++) {
             if (services.rooms[i]._id == roomId) {
-                return services.rooms[i].messages;
+                return services.rooms[i];
             }
         }
     };
 
-    services.loadOfflineMessages = function (roomId) {
+    services.getRoomOfflineMessages = function (roomId) {
         var deferred = $q.defer();
-        $http.get('/chat/roomsMessages').then(
-            function (messages) {
-                var messagesList = services.getMessagesList(roomId);
+        $http.get('/chat/roomOfflineMessages/' + roomId).then(
+            function (res) {
+                var messagesList = services.getRoom(roomId).messages;
                 messagesList.length = 0;
-                for (var i = 0; i < messages.length; i++) {
-                    messagesList[i] = messages[i];
+                var loadedMessages = res.data;
+                for (var i = 0; i < loadedMessages.length; i++) {
+                    messagesList[i] = loadedMessages[i];
                 }
                 deferred.resolve();
             }, function (res) {
@@ -34,12 +31,39 @@ function chatService($http, $q) {
     };
 
     services.getRooms = function () {
+        services.rooms.length = 0;
         var deferred = $q.defer();
         $http.get('/chat/getRooms').then(
-            function (rooms) {
-                services.rooms = rooms;
-                services.rooms.messages = [];
+            function (res) {
+                for (var i = 0; i < res.data.length; i++) {
+                    services.rooms[i] = res.data[i];
+                    services.rooms[i].messages = [];
+                }
                 deferred.resolve();
+            }, function (res) {
+                deferred.reject(res);
+            }
+        );
+
+        return deferred.promise;
+    };
+
+    services.sendMessage = function(message) {
+        var room = services.getRoom(message.room);
+        if (!room) {
+            return;
+        }
+
+        var deferred = $q.defer();
+        var req = {
+            method: 'POST',
+            url: '/chat/sendMessage',
+            data: { message: message }
+        };
+        $http(req).then(
+            function (res) {
+                room.messages.push(res.data); //the new message
+                deferred.resolve(res.data);
             }, function (res) {
                 deferred.reject(res);
             }

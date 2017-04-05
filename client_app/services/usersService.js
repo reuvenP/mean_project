@@ -91,6 +91,14 @@ function usersService($http, $q, $uibModal) {
         return deferred.promise;
     };
 
+    var getUserById = function(userId) {
+        for(var i = 0, len = services.usersList.length; i < len; ++i) {
+            if (services.usersList[i]._id == userId) {
+                return services.usersList[i];
+            }
+        }
+    };
+
     var openUserEditModal = function(user /*, $scope*/) {
         var modal = $uibModal.open({
             animation: true,
@@ -114,6 +122,7 @@ function usersService($http, $q, $uibModal) {
     services.deleteUser = deleteUser;
     services.addUser = addUser;
     services.editUser = editUser;
+    services.getUserById = getUserById;
     services.openUserEditModal = openUserEditModal;
 
     return services;

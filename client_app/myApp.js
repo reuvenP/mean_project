@@ -37,6 +37,10 @@ app.config(function ($routeProvider) {
         });
 });
 
+app.config(function ($httpProvider) {
+    $httpProvider.defaults.headers.common['Pragma'] = 'no-cache';
+});
+
 (function (module) {
 
     var fileReader = function ($q, $log) {
