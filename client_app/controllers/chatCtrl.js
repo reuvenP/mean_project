@@ -66,26 +66,52 @@ function chatController(pageService, chatService, usersService) {
         }
     };
 
-    usersService.refreshUsers().then(function() {
-        chatService.getRooms().then(
-            function(res) {
+    var openRoom = function(room) {
+        room.loading = true;
+        chatService.getRoomOfflineMessages(room._id).then(
+            function (res) {
+                //TODO connect to socket.io channel
+                //TODO scroll down
                 pageService.clearAlert();
-                for (var i = 0; i < vm.rooms.length; i++) {
-                    vm[vm.rooms[i]._id] = {};
-                    chatService.getRoomOfflineMessages(vm.rooms[i]._id).then(
-                        function (res) {
-                            pageService.clearAlert();
-                        },
-                        function (res) {
-                            pageService.showAlert(res.status + ' - ' + res.statusText + ": " + (res.data.message || res.data.errmsg || res.data), 'danger', 'Error');
-                        }
-                    );
-                    //TODO scroll down
-                }
             },
             function (res) {
-                pageService.showAlert(res.status + ' - ' + res.statusText + ": " + (res.data.message || res.data.errmsg || res.data), 'danger', 'Error');
+                pageService.showResponseError(res);
             }
-        );
-    });
+        ).finally(function() {
+            room.loading = false;
+        });
+    };
+
+    vm.roomSelectionChanged = function(room) {
+        if (room.showRoom) {
+            openRoom(room);
+        }
+        else {
+            vm.closeRoom(room);
+        }
+    };
+
+    vm.closeRoom = function(room) {
+        room.showRoom = false;
+        room.messages.length = 0;
+        //TODO disconnect from socket.io channel
+    };
+
+    usersService.refreshUsers().then(
+        function() {
+            chatService.getRooms().then(
+                function(res) {
+                    pageService.clearAlert();
+                    for (var i = 0; i < vm.rooms.length; i++) {
+                        vm[vm.rooms[i]._id] = {};
+                    }
+                },
+                function (res) {
+                    pageService.showResponseError(res);
+                }
+            )
+        }, function (res) {
+            pageService.showResponseError(res);
+        }
+    );
 }

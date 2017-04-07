@@ -1,13 +1,31 @@
-<div ng-repeat="room in chat.rooms" class="col-md-6">
+<div class="box box-warning">
+    <div class="box-header with-border">
+        <h3 class="box-title">Chat Rooms Selection</h3>
+    </div>
+    <div class="box-body">
+        <div class="form-group">
+            <div ng-repeat="room in chat.rooms" class="col-md-2">
+                <div class="checkbox">
+                    <input type="checkbox" ng-model="room.showRoom" ng-change="chat.roomSelectionChanged(room)" id="checkRoom{{$index}}">
+                    <label for="checkRoom{{$index}}">&nbsp;&nbsp;{{room.name}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-repeat="room in chat.rooms | filter:{showRoom:true}" class="col-md-6">
     <!-- DIRECT CHAT -->
     <div class="box box-warning direct-chat direct-chat-warning">
+        <div ng-show="room.loading" class="overlay">
+            <i class="fa fa-refresh fa-spin"></i>
+        </div>
         <div class="box-header with-border">
             <h3 class="box-title">{{room.name}}</h3>
-
             <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                 </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                <button type="button" class="btn btn-box-tool" data-widget="remove" ng-click="chat.closeRoom(room)"><i class="fa fa-times"></i>
                 </button>
             </div>
         </div>

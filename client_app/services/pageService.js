@@ -30,6 +30,10 @@ function pageService($http, $q, $uibModal) {
         setAlert(alert, type, title);
     };
 
+    services.showResponseError = function(res) {
+        services.showAlert(res.status + ' - ' + res.statusText + ": " + (res.data.message || res.data.errmsg || res.data), 'danger', 'Error');
+    };
+
     services.clearAlert = function() {
         delete(services.mainData.alert);
         delete(services.mainData.alertType);

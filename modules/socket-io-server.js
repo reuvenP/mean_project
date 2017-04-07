@@ -43,6 +43,7 @@ var configSocketIo = function(httpServer, session) {
 
         socket.on('publish', function (msg) {
             dal_rooms.getRoomById(msg.room, function (err, room) {
+                if (!room || !room.name) return;
                 if (!err) {
                     if (io.sockets.adapter.sids[socket.id][room.name]) {
                         dal_messages.addMessage(userId, msg.room, msg.text, msg.link, msg.img, msg.isOnlyForConnected, function (err2) {
