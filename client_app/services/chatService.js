@@ -16,7 +16,25 @@ function chatService($http, $q) {
         }
     };
 
-    services.getRoomOfflineMessages = function (roomId) {
+    services.getRooms = function () {
+        services.rooms.length = 0;
+        var deferred = $q.defer();
+        $http.get('/chat/getRooms').then(
+            function (res) {
+                for (var i = 0; i < res.data.length; i++) {
+                    services.rooms[i] = res.data[i];
+                    services.rooms[i].messages = [];
+                }
+                deferred.resolve();
+            }, function (res) {
+                deferred.reject(res);
+            }
+        );
+
+        return deferred.promise;
+    };
+
+    var getRoomOfflineMessages = function (roomId) {
         var deferred = $q.defer();
         $http.get('/chat/roomOfflineMessages/' + roomId).then(
             function (res) {
@@ -35,20 +53,29 @@ function chatService($http, $q) {
         return deferred.promise;
     };
 
-    services.getRooms = function () {
-        services.rooms.length = 0;
+    services.connectToRoom = function(roomId) {
         var deferred = $q.defer();
-        $http.get('/chat/getRooms').then(
+        getRoomOfflineMessages(roomId).then(
             function (res) {
-                for (var i = 0; i < res.data.length; i++) {
-                    services.rooms[i] = res.data[i];
-                    services.rooms[i].messages = [];
-                }
+                //TODO connect to socket.io channel, and in its success callback:
                 deferred.resolve();
-            }, function (res) {
+                //otherwise:
+                //deferred.reject(res);
+            },
+            function (res) {
                 deferred.reject(res);
             }
         );
+        return deferred.promise;
+    };
+
+    services.disconnectFromRoom = function(roomId) {
+        var deferred = $q.defer();
+        //TODO connect to socket.io channel, and in its success callback:
+        services.getRoom(roomId).messages.length = 0;
+        deferred.resolve();
+        //otherwise:
+        //deferred.reject(res);
 
         return deferred.promise;
     };

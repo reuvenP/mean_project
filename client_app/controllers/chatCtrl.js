@@ -68,16 +68,15 @@ function chatController(pageService, chatService, usersService) {
 
     var openRoom = function(room) {
         room.loading = true;
-        chatService.getRoomOfflineMessages(room._id).then(
-            function (res) {
-                //TODO connect to socket.io channel
+        chatService.connectToRoom(room._id).then(
+            function () {
+                room.showRoom = true;
                 //TODO scroll down
                 pageService.clearAlert();
-            },
-            function (res) {
+            }, function () {
                 pageService.showResponseError(res);
             }
-        ).finally(function() {
+        ).finally(function () {
             room.loading = false;
         });
     };
@@ -92,9 +91,15 @@ function chatController(pageService, chatService, usersService) {
     };
 
     vm.closeRoom = function(room) {
-        room.showRoom = false;
-        room.messages.length = 0;
-        //TODO disconnect from socket.io channel
+        chatService.disconnectFromRoom(room._id).then(
+            function() {
+                room.showRoom = false;
+                pageService.clearAlert();
+            },
+            function (res) {
+                pageService.showResponseError(res);
+            }
+        );
     };
 
     usersService.refreshUsers().then(
