@@ -3,9 +3,6 @@ function chatService($http, $q) {
     var services = {};
     services.rooms = [];
     var socket = io();
-    socket.emit('join', 'room1');
-    socket.emit('leave', 'room5');
-    socket.emit('publish', {room: '58e149540a2d3a0afc7e47de', text:'textrrr', link: 'linkrrr', img: undefined, isOnlyForConnected: false });
 
 
     services.getRoom = function (roomId) {
@@ -57,7 +54,7 @@ function chatService($http, $q) {
         var deferred = $q.defer();
         getRoomOfflineMessages(roomId).then(
             function (res) {
-                //TODO connect to socket.io channel, and in its success callback:
+                socket.emit('join', roomId);
                 deferred.resolve();
                 //otherwise:
                 //deferred.reject(res);
@@ -102,6 +99,22 @@ function chatService($http, $q) {
         );
 
         return deferred.promise;
+    };
+
+    services.sendMessageSocket = function (msg) {
+        var room = services.getRoom(msg.room);
+        if (!room) {
+            return;
+        }
+        socket.emit('publish', {room: room._id, text: msg.text,
+            link: msg.link, img: msg.img, isOnlyForConnected: msg.isOnlyForConnected });
+    };
+
+    services.joinRoom = function (room) {
+        if (!room) {
+            return;
+        }
+        socket.emit('join', room);
     };
 
     return services;

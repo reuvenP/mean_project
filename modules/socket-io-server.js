@@ -26,9 +26,9 @@ var configSocketIo = function(httpServer, session) {
                 }
                 else {
                     for (var i = 0; i < rooms.length; i++) {
-                        if (rooms[i].name == room) {
-                            console.log('joined room: ' + room);
-                            socket.join(room);
+                        if (rooms[i]._id == room) {
+                            console.log('joined room: ' + rooms[i].name);
+                            socket.join(rooms[i].name);
                             return;
                         }
                         console.log('user not allowed');
