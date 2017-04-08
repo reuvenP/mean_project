@@ -39,18 +39,21 @@ function chatController(pageService, chatService, usersService) {
     };
 
     vm.sendMessage = function(room) {
-        if (!vm[room._id].text) {
+        var htmlArea = $('#' + room._id + " textarea");
+        var html = htmlArea.val();
+        if (!html) {
             return;
         }
         var message = {
             room: room._id,
-            text: vm[room._id].text,
+            text: html, //vm[room._id].text,
             //TODO link, image
             isOnlyForConnected: false //TODO allow selection for this
         };
-        delete(vm[room._id].text);
-        chatService.sendMessage(message).then(
+
+        chatService.sendMessageSocket(message).then(
             function (res) {
+                htmlArea.data("wysihtml5").editor.clear();
                 pageService.clearAlert();
                 //TODO scroll down
             },
@@ -73,6 +76,8 @@ function chatController(pageService, chatService, usersService) {
                 room.showRoom = true;
                 //TODO scroll down
                 pageService.clearAlert();
+                //bootstrap WYSIHTML5 - text editor
+                $('#' + room._id + " textarea").wysihtml5();
             }, function () {
                 pageService.showResponseError(res);
             }
