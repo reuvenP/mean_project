@@ -18,7 +18,7 @@
 
 <div ng-repeat="room in chat.rooms | filter:{showRoom:true}">
     <!-- DIRECT CHAT -->
-    <div ng-class="[{'col-md-6': !room.expanded, 'col-md-12': room.expanded}]">
+    <div ng-class="[{'col-sm-6': !room.expanded, 'col-sm-12': room.expanded}]">
         <div class="box box-warning direct-chat direct-chat-warning" id="{{room._id}}">
             <div ng-show="room.loading" class="overlay">
                 <i class="fa fa-refresh fa-spin"></i>
@@ -66,10 +66,9 @@
             <!-- /.box-body -->
             <div class="box-footer">
                 <div class="input-group" style="width: 100%;">
-                    <textarea style="font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"
-                              ng-model="chat[room._id].text" placeholder="Type Message ..."
-                              ng-keypress="chat.sendOnEnterKey($event, room)" class="form-control textarea">
-                    </textarea>
+                    <div style="height: 200px;font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"
+                         class="htmlarea">
+                    </div>
                     <!--<span class="input-group-btn margin">-->
 
                         <!--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Action-->
