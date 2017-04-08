@@ -1,3 +1,4 @@
+<div class="chatrooms" ng-show="chat.mainData.myUser">
 <div class="box box-warning">
     <div class="box-header with-border">
         <h3 class="box-title">Chat Rooms Selection</h3>
@@ -6,7 +7,8 @@
         <div class="form-group">
             <div ng-repeat="room in chat.rooms" class="col-md-2">
                 <div class="checkbox">
-                    <input type="checkbox" ng-model="room.showRoom" ng-change="chat.roomSelectionChanged(room)" id="checkRoom{{$index}}">
+                    <input type="checkbox" ng-model="room.showRoom" ng-change="chat.roomSelectionChanged(room)"
+                           id="checkRoom{{$index}}">
                     <label for="checkRoom{{$index}}">&nbsp;&nbsp;{{room.name}}</label>
                 </div>
             </div>
@@ -14,56 +16,83 @@
     </div>
 </div>
 
-<div ng-repeat="room in chat.rooms | filter:{showRoom:true}" class="col-md-6">
+<div ng-repeat="room in chat.rooms | filter:{showRoom:true}">
     <!-- DIRECT CHAT -->
-    <div class="box box-warning direct-chat direct-chat-warning">
-        <div ng-show="room.loading" class="overlay">
-            <i class="fa fa-refresh fa-spin"></i>
-        </div>
-        <div class="box-header with-border">
-            <h3 class="box-title">{{room.name}}</h3>
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove" ng-click="chat.closeRoom(room)"><i class="fa fa-times"></i>
-                </button>
+    <div ng-class="[{'col-md-6': !room.expanded, 'col-md-12': room.expanded}]">
+        <div class="box box-warning direct-chat direct-chat-warning" id="{{room._id}}">
+            <div ng-show="room.loading" class="overlay">
+                <i class="fa fa-refresh fa-spin"></i>
             </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body">
-            <!-- Conversations are loaded here -->
-            <div class="direct-chat-messages">
-                <!-- Message. Default to the left -->
-                <div ng-repeat="message in room.messages" ng-class="['direct-chat-msg', {'right': !chat.isMyMessage(message)}]">
-                    <div class="direct-chat-info clearfix">
-                        <span ng-class="['direct-chat-name', {'pull-left': chat.isMyMessage(message), 'pull-right': !chat.isMyMessage(message)}]">{{chat.senderName(message.sender)}}</span>
-                        <span ng-class="['direct-chat-timestamp', {'pull-right': chat.isMyMessage(message), 'pull-left': !chat.isMyMessage(message)}]"> {{ chat.formatDate(message.submitDate) }}</span>
-                    </div>
-                    <!-- /.direct-chat-info -->
-                    <img class="direct-chat-img" ng-attr-src="{{chat.senderImage(message.sender)}}" alt="message user image"><!-- /.direct-chat-img -->
-                    <div class="direct-chat-text">
-                        {{message.text}}
-                    </div>
-                    <!-- /.direct-chat-text -->
+            <div class="box-header with-border">
+                <h3 class="box-title">{{room.name}}</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-box-tool">
+                        <i ng-class="['fa', {'fa-expand': !room.expanded, 'fa-compress': room.expanded}]"
+                           ng-click="room.expanded = !(room.expanded)" ></i>
+                    </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove" ng-click="chat.closeRoom(room)"><i
+                            class="fa fa-times"></i>
+                    </button>
                 </div>
-                <!-- /.direct-chat-msg -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <!-- Conversations are loaded here -->
+                <div class="direct-chat-messages">
+                    <!-- Message. Default to the left -->
+                    <div ng-repeat="message in room.messages"
+                         ng-class="['direct-chat-msg', {'right': !chat.isMyMessage(message)}]">
+                        <div class="direct-chat-info clearfix">
+                            <span ng-class="['direct-chat-name', {'pull-left': chat.isMyMessage(message), 'pull-right': !chat.isMyMessage(message)}]">{{chat.senderName(message.sender)}}</span>
+                            <span ng-class="['direct-chat-timestamp', {'pull-right': chat.isMyMessage(message), 'pull-left': !chat.isMyMessage(message)}]"> {{ chat.formatDate(message.submitDate) }}</span>
+                        </div>
+                        <!-- /.direct-chat-info -->
+                        <img class="direct-chat-img" ng-attr-src="{{chat.senderImage(message.sender)}}"
+                             alt="message user image"><!-- /.direct-chat-img -->
+                        <div class="direct-chat-text">
+                            <!--{{message.text}}-->
+                            <p ng-bind-html="message.text"></p>
+                        </div>
+                        <!-- /.direct-chat-text -->
+                    </div>
+                    <!-- /.direct-chat-msg -->
+
+                </div>
+                <!--/.direct-chat-messages-->
 
             </div>
-            <!--/.direct-chat-messages-->
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <div class="input-group" style="width: 100%;">
+                    <textarea style="font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"
+                              ng-model="chat[room._id].text" placeholder="Type Message ..."
+                              ng-keypress="chat.sendOnEnterKey($event, room)" class="form-control textarea">
+                    </textarea>
+                    <!--<span class="input-group-btn margin">-->
 
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-            <div class="input-group">
-                <input type="text" name="message" ng-model="chat[room._id].text" placeholder="Type Message ..."
-                       ng-keypress="chat.sendOnEnterKey($event, room)" class="form-control">
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-warning btn-flat" ng-click="chat.sendMessage(room)">Send</button>
-                </span>
+                        <!--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Action-->
+                        <!--<span class="fa fa-caret-down"></span></button>-->
+                      <!--<ul class="dropdown-menu">-->
+                        <!--<li><a href="#">Action</a></li>-->
+                        <!--<li><a href="#">Another action</a></li>-->
+                        <!--<li><a href="#">Something else here</a></li>-->
+                        <!--<li class="divider"></li>-->
+                        <!--<li><a href="#">Separated link</a></li>-->
+                      <!--</ul>-->
+                                <!--<button type="button" class="btn btn-warning btn-flat" ng-click="chat.sendMessage(room)">Send</button>-->
+
+
+                    <!--</span>-->
+
+                <button type="button" class="btn btn-warning btn-flat" ng-click="chat.sendMessage(room)">Send</button>
+                </div>
             </div>
+            <!-- /.box-footer-->
         </div>
-        <!-- /.box-footer-->
     </div>
     <!--/.direct-chat -->
 </div>
 <!-- /.col -->
+</div>

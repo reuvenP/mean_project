@@ -1,4 +1,4 @@
-var app = angular.module('myApp', ['ngAnimate', 'ui.bootstrap', 'ngRoute']);
+var app = angular.module('myApp', ['ngAnimate', 'ui.bootstrap', 'ngRoute', 'ngSanitize']);
 
 app.config(function ($routeProvider) {
     $routeProvider

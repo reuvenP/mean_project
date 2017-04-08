@@ -11,7 +11,7 @@ router.get('/', function (req, res, next) {
 
 router.get('/getUsers', function (req, res, next) {
     if (!req.user) {
-        return res.status(401).send('You must login first to view the neighbors');
+        return res.status(401).send('You must login first');
     }
 
     users.getUsers(!req.user.isAdmin, function (error, users) {
