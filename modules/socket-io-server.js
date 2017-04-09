@@ -37,8 +37,11 @@ var configSocketIo = function(httpServer, session) {
             })
         });
 
-        socket.on('leave', function (room) {
-            socket.leave(room);
+        socket.on('leave', function (roomId) {
+            dal_rooms.getRoomById(roomId, function (err, room) {
+                if (err) return;
+                socket.leave(room.name);
+            });
         });
 
         socket.on('publish', function (msg) {

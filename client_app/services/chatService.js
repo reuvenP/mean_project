@@ -122,5 +122,10 @@ function chatService($http, $q) {
         socket.emit('join', room);
     };
 
+    services.leaveRoom = function (room) {
+        if (!room) return;
+        socket.emit('leave', room);
+    }
+
     return services;
 }
