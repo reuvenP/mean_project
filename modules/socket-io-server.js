@@ -46,18 +46,15 @@ var configSocketIo = function(httpServer, session) {
                 if (!room || !room.name) return;
                 if (!err) {
                     if (io.sockets.adapter.sids[socket.id][room.name]) {
-                        dal_messages.addMessage(userId, msg.room, msg.text, msg.link, msg.img, msg.isOnlyForConnected, function (err2) {
+                        dal_messages.addMessage(userId, msg.room, msg.text, msg.link, msg.img, msg.isOnlyForConnected, function (err2, newMsg) {
                             if (!err2) {
-                                socket.broadcast.to(room.name).emit('send_msg', msg);
+                                io.to(room.name).emit('send_msg', newMsg);
                             }
                         })
                     }
                 }
             });
-
-
         });
-
     });
 };
 

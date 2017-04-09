@@ -39,8 +39,8 @@ function chatController(pageService, chatService, usersService) {
     };
 
     vm.sendMessage = function(room) {
-        var htmlArea = $('#' + room._id + " textarea");
-        var html = htmlArea.val();
+        var htmlArea = $('#' + room._id + " .htmlarea");
+        var html = htmlArea.html();
         if (!html) {
             return;
         }
@@ -51,16 +51,9 @@ function chatController(pageService, chatService, usersService) {
             isOnlyForConnected: false //TODO allow selection for this
         };
 
-        chatService.sendMessageSocket(message).then(
-            function (res) {
-                htmlArea.data("wysihtml5").editor.clear();
-                pageService.clearAlert();
-                //TODO scroll down
-            },
-            function (res) {
-                pageService.showAlert(res.status + ' - ' + res.statusText + ": " + (res.data.message || res.data.errmsg || res.data), 'danger', 'Error');
-            }
-        );
+        chatService.sendMessageSocket(message);
+        htmlArea.html("");
+        pageService.clearAlert();
     };
 
     vm.sendOnEnterKey = function(keyEvent, room) {
@@ -77,7 +70,20 @@ function chatController(pageService, chatService, usersService) {
                 //TODO scroll down
                 pageService.clearAlert();
                 //bootstrap WYSIHTML5 - text editor
-                $('#' + room._id + " textarea").wysihtml5();
+                $('#' + room._id + " .htmlarea").wysihtml5({
+                    toolbar: {
+                        "font-styles": false, //Font styling, e.g. h1, h2, etc. Default true
+                        // "emphasis": true, //Italics, bold, etc. Default true
+                        // "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+                        // "html": false, //Button which allows you to edit the generated HTML. Default false
+                        // "link": true, //Button to insert a link. Default true
+                        // "image": true, //Button to insert an image. Default true,
+                        // "color": false, //Button to change color of font
+                        "blockquote": false, //Blockquote
+                        "size": 'sm', //default: none, other options are xs, sm, lg
+                        fa: true
+                }
+            });
             }, function () {
                 pageService.showResponseError(res);
             }
