@@ -2,10 +2,23 @@
  * Created by reuvenp on 15/03/2017.
  */
 
+var mqtt = require('mqtt');
+var client  = mqtt.connect('mqtt://localhost');
 var dal_messages = require('./dal_messages');
 var dal_rooms = require('./dal_rooms');
 var dal_users = require('./dal_users');
 var dal_users_rooms = require('./dal_user_rooms');
+
+client.on('connect', function () {
+    client.subscribe('msgs');
+});
+
+client.on('message', function (topic, message) {
+    // message is Buffer
+    console.log(message.toString());
+    //TODO: handle recived msg
+    client.end()
+});
 
 var configSocketIo = function(httpServer, session) {
     var sharedsession = require("express-socket.io-session");
@@ -52,6 +65,7 @@ var configSocketIo = function(httpServer, session) {
                         dal_messages.addMessage(userId, msg.room, msg.text, msg.link, msg.img, msg.isOnlyForConnected, function (err2, newMsg) {
                             if (!err2) {
                                 io.to(room.name).emit('send_msg', newMsg);
+                                client.publish('msgs', JSON.stringify(newMsg));
                             }
                         })
                     }
