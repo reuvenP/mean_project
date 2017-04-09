@@ -1,5 +1,5 @@
-angular.module('myApp').factory('chatService', ['$http', '$q', chatService]);
-function chatService($http, $q) {
+angular.module('myApp').factory('chatService', ['$http', '$q', '$rootScope', chatService]);
+function chatService($http, $q, $rootScope) {
     var services = {};
     services.rooms = [];
     var socket = io();
@@ -7,7 +7,9 @@ function chatService($http, $q) {
     socket.on('send_msg', function(data){
         var room = services.getRoom(data.room);
         if (!room) return;
-        room.messages.push(data);
+        $rootScope.$apply(function(){
+            room.messages.push(data);
+        });
     });
 
     services.getRoom = function (roomId) {
@@ -115,17 +117,18 @@ function chatService($http, $q) {
             link: msg.link, img: msg.img, isOnlyForConnected: msg.isOnlyForConnected });
     };
 
-    services.joinRoom = function (room) {
-        if (!room) {
+    services.joinRoom = function (roomId) {
+        if (!roomId) {
             return;
         }
-        socket.emit('join', room);
+        socket.emit('join', roomId);
     };
 
-    services.leaveRoom = function (room) {
-        if (!room) return;
-        socket.emit('leave', room);
-    }
+    services.leaveRoom = function (roomId) {
+        if (!roomId) return;
+        socket.emit('leave', roomId);
+        services.getRoom(roomId).messages.length = 0;
+    };
 
     return services;
 }
