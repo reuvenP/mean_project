@@ -1,5 +1,5 @@
-angular.module('myApp').controller('chatController', ['pageService', 'chatService', 'usersService', chatController]);
-function chatController(pageService, chatService, usersService) {
+angular.module('myApp').controller('chatController', ['pageService', 'chatService', 'usersService', '$timeout', chatController]);
+function chatController(pageService, chatService, usersService, $timeout) {
     var vm = this;
     vm.mainData = pageService.mainData;
 
@@ -100,6 +100,10 @@ function chatController(pageService, chatService, usersService) {
                     },
                     customTemplates: buildImageButton(room._id) //for loading our custom image button
                 });
+                //remove ugly tooltip (huge url of image) after rendering
+                $timeout(function() {
+                    $('#' + room._id + " img").removeAttr('title')
+                }, 0);
             }, function (res) {
                 pageService.showResponseError(res);
             }
