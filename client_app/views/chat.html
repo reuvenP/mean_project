@@ -52,7 +52,6 @@
                         <img class="direct-chat-img" ng-attr-src="{{chat.senderImage(message.sender)}}"
                              alt="message user image"><!-- /.direct-chat-img -->
                         <div class="direct-chat-text">
-                            <!--{{message.text}}-->
                             <p ng-bind-html="message.text"></p>
                         </div>
                         <!-- /.direct-chat-text -->
@@ -66,26 +65,10 @@
             <!-- /.box-body -->
             <div class="box-footer">
                 <div class="input-group" style="width: 100%;">
-                    <div style="height: 200px;font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"
+                    <div style="height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"
                          class="htmlarea">
                     </div>
-                    <!--<span class="input-group-btn margin">-->
-
-                        <!--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Action-->
-                        <!--<span class="fa fa-caret-down"></span></button>-->
-                      <!--<ul class="dropdown-menu">-->
-                        <!--<li><a href="#">Action</a></li>-->
-                        <!--<li><a href="#">Another action</a></li>-->
-                        <!--<li><a href="#">Something else here</a></li>-->
-                        <!--<li class="divider"></li>-->
-                        <!--<li><a href="#">Separated link</a></li>-->
-                      <!--</ul>-->
-                                <!--<button type="button" class="btn btn-warning btn-flat" ng-click="chat.sendMessage(room)">Send</button>-->
-
-
-                    <!--</span>-->
-
-                <button type="button" class="btn btn-warning btn-flat" ng-click="chat.sendMessage(room)">Send</button>
+                    <button type="button" class="btn btn-warning btn-flat" ng-click="chat.sendMessage(room)">Send</button>
                 </div>
             </div>
             <!-- /.box-footer-->

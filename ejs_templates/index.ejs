@@ -77,6 +77,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
           $('#homeLink').addClass('active');
           window.location.href = '/#/home'
       }
+
+      function insertImage(roomId) {
+          var file = $('#' + roomId + " input[type=file]").get(0).files[0];
+          if (file) {
+              var htmlArea = $('#' + roomId + " .htmlarea");
+              var reader = new FileReader();
+              reader.addEventListener("load", function () {
+                  if (reader.result.startsWith('data:image')) {
+                      var editor = htmlArea.data('wysihtml5').editor;
+                      editor.composer.commands.exec("insertImage", reader.result);
+                  }
+                  else {
+                      alert("Invalid image!");
+                  }
+              }, false);
+
+              reader.readAsDataURL(file);
+          }
+      }
   </script>
 
 </head>

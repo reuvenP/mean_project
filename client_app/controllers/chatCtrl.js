@@ -5,7 +5,6 @@ function chatController(pageService, chatService, usersService) {
 
     pageService.setPageTitle('Chat Rooms', 'כאן אפשר לבקש כפית סוכר עד מחר');
 
-    //vm.chatRoomsIds = [123, 456];
     vm.rooms = chatService.rooms;
 
     vm.getRoom = function(roomId) {
@@ -46,8 +45,7 @@ function chatController(pageService, chatService, usersService) {
         }
         var message = {
             room: room._id,
-            text: html, //vm[room._id].text,
-            //TODO link, image
+            text: html,
             isOnlyForConnected: false //TODO allow selection for this
         };
 
@@ -62,6 +60,23 @@ function chatController(pageService, chatService, usersService) {
         }
     };
 
+    var buildImageButton = function(roomId) {
+        return {
+            image : function(context) {
+                var locale = context.locale;
+                var options = context.options;
+                var htmlButton =
+                    '<li>' +
+                        '<label class="btn btn-sm btn-default" title="Insert image" tabindex="-1">' +
+                        '<span class="fa fa-file-image-o"></span>' +
+                            '<input type="file" style="display: none;" name="imageFile" id="imageFile" onchange="insertImage(\'' + roomId + '\')">' +
+                        '</label>' +
+                    '</li>';
+                return htmlButton;
+            }
+        };
+    };
+
     var openRoom = function(room) {
         room.loading = true;
         chatService.connectToRoom(room._id).then(
@@ -69,7 +84,7 @@ function chatController(pageService, chatService, usersService) {
                 room.showRoom = true;
                 //TODO scroll down
                 pageService.clearAlert();
-                //bootstrap WYSIHTML5 - text editor
+                //run bootstrap3-wysiwyg - html editor
                 $('#' + room._id + " .htmlarea").wysihtml5({
                     toolbar: {
                         "font-styles": false, //Font styling, e.g. h1, h2, etc. Default true
@@ -82,9 +97,10 @@ function chatController(pageService, chatService, usersService) {
                         "blockquote": false, //Blockquote
                         "size": 'sm', //default: none, other options are xs, sm, lg
                         fa: true
-                }
-            });
-            }, function () {
+                    },
+                    customTemplates: buildImageButton(room._id) //for loading our custom image button
+                });
+            }, function (res) {
                 pageService.showResponseError(res);
             }
         ).finally(function () {
