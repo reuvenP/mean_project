@@ -17,7 +17,6 @@ client.on('message', function (topic, message) {
     // message is Buffer
     console.log(message.toString());
     //TODO: handle recived msg
-    client.end()
 });
 
 var configSocketIo = function(httpServer, session) {
