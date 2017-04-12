@@ -34,7 +34,7 @@ app.config(function ($routeProvider) {
 
         .when('/rooms', {
             templateUrl: '/client_app/views/rooms.html',
-            controller: 'roomsCtrl',
+            controller: 'roomsController',
             controllerAs: 'rooms'
         })
 
