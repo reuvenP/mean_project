@@ -48,4 +48,34 @@ router.get('/roomOfflineMessages/:roomId', function(req, res, next) {
     })
 });
 
+router.post('/likeMessage/:messageId', function(req, res, next) {
+    if (!req.user) {
+        return res.status(401).send('Not logged-in');
+    }
+
+    dal_messages.addVote(req.params.messageId, true, req.connection.remoteAddress,
+        function(error, message) {
+            if (error) {
+                return res.status(500).send(error);
+            }
+            res.json(message);
+        }
+    );
+});
+
+router.post('/dislikeMessage/:messageId', function(req, res, next) {
+    if (!req.user) {
+        return res.status(401).send('Not logged-in');
+    }
+
+    dal_messages.addVote(req.params.messageId, false, req.connection.remoteAddress,
+        function(error, message) {
+            if (error) {
+                return res.status(500).send(error);
+            }
+            res.json(message);
+        }
+    );
+});
+
 module.exports = router;

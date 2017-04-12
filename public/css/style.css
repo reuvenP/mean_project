@@ -25,3 +25,19 @@
 .modal-content .box {
     border-radius: 0;
 }
+
+.direct-chat-msg.left ul {
+    margin-left: 50px;
+}
+
+.direct-chat-msg.left li:first-child {
+    padding-left: 7px;
+}
+
+.direct-chat-msg.right ul {
+    margin-right: 50px;
+}
+
+.direct-chat-msg.right li:first-child {
+    padding-left: 12px;
+}

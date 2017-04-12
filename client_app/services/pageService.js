@@ -30,8 +30,8 @@ function pageService($http, $q, $uibModal) {
         setAlert(alert, type, title);
     };
 
-    services.showResponseError = function(res) {
-        services.showAlert(res.status + ' - ' + res.statusText + ": " + (res.data.message || res.data.errmsg || res.data), 'danger', 'Error');
+    services.showResponseError = function(res, type, title) {
+        services.showAlert(res.status + ' - ' + res.statusText + ": " + (res.data.message || res.data.errmsg || res.data), type || 'danger',  title || 'Error');
     };
 
     services.clearAlert = function() {

@@ -9,6 +9,7 @@ function chatService($http, $q, $rootScope) {
         if (!room) return;
         $rootScope.$apply(function(){
             room.messages.push(data);
+            $rootScope.$emit('new_msg', room._id);
         });
     });
 
@@ -57,11 +58,14 @@ function chatService($http, $q, $rootScope) {
         return deferred.promise;
     };
 
-    services.connectToRoom = function(roomId) {
+    services.connectToRoom = function(roomId, scope, newMsgCallback) {
         var deferred = $q.defer();
         getRoomOfflineMessages(roomId).then(
             function (res) {
                 socket.emit('join', roomId);
+                var handler = $rootScope.$on('new_msg', newMsgCallback);
+                scope.$on('$destroy', handler);
+
                 deferred.resolve();
                 //otherwise:
                 //deferred.reject(res);
@@ -101,6 +105,64 @@ function chatService($http, $q, $rootScope) {
                 room.messages.push(res.data); //the new message
                 deferred.resolve(res.data);
             }, function (res) {
+                deferred.reject(res);
+            }
+        );
+
+        return deferred.promise;
+    };
+
+    function replaceMessage(roomId, messageId, newMessage) {
+        var messages = services.getRoom(roomId).messages;
+        for(var i = 0; i < messages.length; i++) {
+            if (messages[i]._id == messageId) {
+                messages[i] = newMessage;
+                return;
+            }
+        }
+    }
+
+    function updateVoteError(roomId, messageId, voteError) {
+        var messages = services.getRoom(roomId).messages;
+        for(var i = 0; i < messages.length; i++) {
+            if (messages[i]._id == messageId) {
+                messages[i].voteError = voteError;
+                return;
+            }
+        }
+    }
+
+    services.likeMessage = function(messageId, roomId) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'POST',
+            url: '/chat/likeMessage/' + messageId
+        };
+        $http(req).then(
+            function (res) {
+                replaceMessage(roomId, messageId, res.data); //the updated message
+                deferred.resolve(res.data);
+            }, function (res) {
+                updateVoteError(roomId, messageId, res.data);
+                deferred.reject(res);
+            }
+        );
+
+        return deferred.promise;
+    };
+
+    services.dislikeMessage = function(messageId, roomId) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'POST',
+            url: '/chat/dislikeMessage/' + messageId
+        };
+        $http(req).then(
+            function (res) {
+                replaceMessage(roomId, messageId, res.data); //the updated message
+                deferred.resolve(res.data);
+            }, function (res) {
+                updateVoteError(roomId, messageId, res.data);
                 deferred.reject(res);
             }
         );

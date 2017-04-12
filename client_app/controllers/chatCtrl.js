@@ -1,5 +1,5 @@
-angular.module('myApp').controller('chatController', ['pageService', 'chatService', 'usersService', '$timeout', chatController]);
-function chatController(pageService, chatService, usersService, $timeout) {
+angular.module('myApp').controller('chatController', ['$scope', 'pageService', 'chatService', 'usersService', '$timeout', chatController]);
+function chatController($scope, pageService, chatService, usersService, $timeout) {
     var vm = this;
     vm.mainData = pageService.mainData;
 
@@ -21,7 +21,8 @@ function chatController(pageService, chatService, usersService, $timeout) {
         ];
 
         var monthIndex = date.getMonth();
-        return date.getDate() + ' ' + monthNames[monthIndex] + ' ' + date.getHours() + ':' + date.getMinutes();
+        return date.getDate() + ' ' + monthNames[monthIndex] + ' ' +
+               ('00' + date.getHours()).slice(-2) + ':' + ('00' + date.getMinutes()).slice(-2);
     };
 
     vm.isMyMessage = function(message) {
@@ -46,7 +47,7 @@ function chatController(pageService, chatService, usersService, $timeout) {
         var message = {
             room: room._id,
             text: html,
-            isOnlyForConnected: false //TODO allow selection for this
+            isOnlyForConnected: room.onlyForConnected || false
         };
 
         chatService.sendMessageSocket(message);
@@ -54,10 +55,20 @@ function chatController(pageService, chatService, usersService, $timeout) {
         pageService.clearAlert();
     };
 
-    vm.sendOnEnterKey = function(keyEvent, room) {
-        if (keyEvent.which === 13) {
-            vm.sendMessage(room);
-        }
+    vm.likeMessage = function(message, room) {
+        chatService.likeMessage(message._id, room._id).then(
+            function(res) {
+                pageService.clearAlert();
+            }
+        )
+    };
+
+    vm.dislikeMessage = function(message, room) {
+        chatService.dislikeMessage(message._id, room._id).then(
+            function(res) {
+                pageService.clearAlert();
+            }
+        )
     };
 
     var buildImageButton = function(roomId) {
@@ -77,12 +88,20 @@ function chatController(pageService, chatService, usersService, $timeout) {
         };
     };
 
+    var newMsgCallback = function(event, roomId) {
+        //remove ugly tooltip (huge url of image) after rendering, and scroll down
+        $timeout(function() {
+            $('#' + roomId + ' img').removeAttr('title');
+            var body = $('#' + roomId + ' .direct-chat-messages');
+            body.scrollTop(body[0].scrollHeight - body[0].clientHeight);
+        }, 0);
+    };
+
     var openRoom = function(room) {
         room.loading = true;
-        chatService.connectToRoom(room._id).then(
+        chatService.connectToRoom(room._id, $scope, newMsgCallback).then(
             function () {
                 room.showRoom = true;
-                //TODO scroll down
                 pageService.clearAlert();
                 //run bootstrap3-wysiwyg - html editor
                 $('#' + room._id + " .htmlarea").wysihtml5({
@@ -100,10 +119,7 @@ function chatController(pageService, chatService, usersService, $timeout) {
                     },
                     customTemplates: buildImageButton(room._id) //for loading our custom image button
                 });
-                //remove ugly tooltip (huge url of image) after rendering
-                $timeout(function() {
-                    $('#' + room._id + " img").removeAttr('title')
-                }, 0);
+                newMsgCallback(null, room._id);
             }, function (res) {
                 pageService.showResponseError(res);
             }
@@ -122,15 +138,21 @@ function chatController(pageService, chatService, usersService, $timeout) {
     };
 
     vm.closeRoom = function(room) {
-        chatService.disconnectFromRoom(room._id).then(
-            function() {
-                room.showRoom = false;
-                pageService.clearAlert();
-            },
-            function (res) {
-                pageService.showResponseError(res);
-            }
-        );
+        chatService.leaveRoom(room._id);
+        // chatService.disconnectFromRoom(room._id).then(
+        //     function() {
+        //         room.showRoom = false;
+        //         pageService.clearAlert();
+        //     },
+        //     function (res) {
+        //         pageService.showResponseError(res);
+        //     }
+        // );
+    };
+
+    vm.toggleExpanded = function(room) {
+        var currentStatus = room.isExpanded || false;
+        room.isExpanded = !currentStatus;
     };
 
     usersService.refreshUsers().then(
@@ -138,9 +160,9 @@ function chatController(pageService, chatService, usersService, $timeout) {
             chatService.getRooms().then(
                 function(res) {
                     pageService.clearAlert();
-                    for (var i = 0; i < vm.rooms.length; i++) {
-                        vm[vm.rooms[i]._id] = {};
-                    }
+                    // for (var i = 0; i < vm.rooms.length; i++) {
+                    //     vm[vm.rooms[i]._id] = {};
+                    // }
                 },
                 function (res) {
                     pageService.showResponseError(res);

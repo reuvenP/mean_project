@@ -1,4 +1,4 @@
-<div class="chatrooms" ng-show="chat.mainData.myUser">
+<div class="chatrooms " ng-show="chat.mainData.myUser">
 <div class="box box-warning">
     <div class="box-header with-border">
         <h3 class="box-title">Chat Rooms Selection</h3>
@@ -18,7 +18,7 @@
 
 <div ng-repeat="room in chat.rooms | filter:{showRoom:true}">
     <!-- DIRECT CHAT -->
-    <div ng-class="[{'col-sm-6': !room.expanded, 'col-sm-12': room.expanded}]">
+    <div ng-class="[{'col-sm-6': !room.isExpanded, 'col-sm-12': room.isExpanded}]">
         <div class="box box-warning direct-chat direct-chat-warning" id="{{room._id}}">
             <div ng-show="room.loading" class="overlay">
                 <i class="fa fa-refresh fa-spin"></i>
@@ -29,8 +29,8 @@
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                     </button>
                     <button type="button" class="btn btn-box-tool">
-                        <i ng-class="['fa', {'fa-expand': !room.expanded, 'fa-compress': room.expanded}]"
-                           ng-click="room.expanded = !(room.expanded)" ></i>
+                        <i ng-class="['fa', {'fa-expand': !room.isExpanded, 'fa-compress': room.isExpanded}]"
+                           ng-click="chat.toggleExpanded(room)" ></i>
                     </button>
                     <button type="button" class="btn btn-box-tool" data-widget="remove" ng-click="chat.closeRoom(room)"><i
                             class="fa fa-times"></i>
@@ -43,7 +43,7 @@
                 <div class="direct-chat-messages">
                     <!-- Message. Default to the left -->
                     <div ng-repeat="message in room.messages"
-                         ng-class="['direct-chat-msg', {'right': !chat.isMyMessage(message)}]">
+                         ng-class="['direct-chat-msg', {'left': chat.isMyMessage(message), 'right': !chat.isMyMessage(message)}]">
                         <div class="direct-chat-info clearfix">
                             <span ng-class="['direct-chat-name', {'pull-left': chat.isMyMessage(message), 'pull-right': !chat.isMyMessage(message)}]">{{chat.senderName(message.sender)}}</span>
                             <span ng-class="['direct-chat-timestamp', {'pull-right': chat.isMyMessage(message), 'pull-left': !chat.isMyMessage(message)}]"> {{ chat.formatDate(message.submitDate) }}</span>
@@ -54,6 +54,20 @@
                         <div class="direct-chat-text">
                             <p ng-bind-html="message.text"></p>
                         </div>
+                        <ul class="list-inline" style="color: #666;">
+                            <li><a href="javascript:;" class="link-black" ng-click="chat.likeMessage(message, room)">
+                                <i class="fa fa-thumbs-o-up margin-r-5"></i></a>
+                                {{message.positiveVotes}}
+                            </li>
+                            <li><a href="javascript:;" class="link-black" ng-click="chat.dislikeMessage(message, room)">
+                                <i class="fa fa-thumbs-o-down margin-r-5"></i></a>
+                                {{message.negativeVotes}}
+                            </li>
+                            <li class="pull-right text-red" ng-show="message.voteError">
+                                <i class="fa fa-exclamation-circle margin-r-5"></i></a>
+                                {{message.voteError}}
+                            </li>
+                        </ul>
                         <!-- /.direct-chat-text -->
                     </div>
                     <!-- /.direct-chat-msg -->
@@ -64,11 +78,18 @@
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
-                <div class="input-group" style="width: 100%;">
-                    <div style="height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"
-                         class="htmlarea">
+                <div style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"
+                     class="form-group htmlarea">
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" ng-model="room.onlyForConnected" id="onlyForConnected{{$index}}">
+                    <label for="onlyForConnected{{$index}}">&nbsp;&nbsp;Send to connected users only</label>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-warning btn-flat" ng-click="chat.sendMessage(room)">
+                            Send &nbsp;
+                            <span class="glyphicon glyphicon-send"></span>
+                        </button>
                     </div>
-                    <button type="button" class="btn btn-warning btn-flat" ng-click="chat.sendMessage(room)">Send</button>
                 </div>
             </div>
             <!-- /.box-footer-->

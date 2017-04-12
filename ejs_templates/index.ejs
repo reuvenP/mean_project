@@ -373,40 +373,48 @@ desired effect
       </ol>
     </section>
 
+     <div class="content">
+         <div ng-show="main.mainData.alert" ng-cloak>
+             <div class="box box-default">
+                 <div class="box-body">
+                     <div ng-show="main.mainData.alertType === 'alert-danger'"
+                          class="alert alert-danger alert-dismissible">
+                         <button type="button" class="close" ng-click="main.clearAlert()"
+                                 aria-hidden="true">&times;</button>
+                         <h4><i class="icon fa fa-ban"></i>{{main.mainData.alertTitle || 'Alert'}}</h4>
+                         {{main.mainData.alert}}
+                     </div>
+                     <div ng-show="main.mainData.alertType === 'alert-info'" class="alert alert-info alert-dismissible">
+                         <button type="button" class="close" ng-click="main.clearAlert()"
+                                 aria-hidden="true">&times;</button>
+                         <h4><i class="icon fa fa-info"></i>{{main.mainData.alertTitle || 'Alert'}}</h4>
+                         {{main.mainData.alert}}
+                     </div>
+                     <div ng-show="main.mainData.alertType === 'alert-warning'"
+                          class="alert alert-warning alert-dismissible">
+                         <button type="button" class="close" ng-click="main.clearAlert()"
+                                 aria-hidden="true">&times;</button>
+                         <h4><i class="icon fa fa-warning"></i>{{main.mainData.alertTitle || 'Alert'}}</h4>
+                         {{main.mainData.alert}}
+                     </div>
+                     <div ng-show="main.mainData.alertType === 'alert-success'"
+                          class="alert alert-success alert-dismissible">
+                         <button type="button" class="close" ng-click="main.clearAlert()"
+                                 aria-hidden="true">&times;</button>
+                         <h4><i class="icon fa fa-check"></i>{{main.mainData.alertTitle || 'Alert'}}</h4>
+                         {{main.mainData.alert}}
+                     </div>
+                 </div>
+             </div>
+         </div>
 
-      <div class="col-md-12" ng-show="main.mainData.alert" ng-cloak>
-          <div class="box box-default">
-              <div class="box-body">
-                  <div ng-show="main.mainData.alertType === 'alert-danger'" class="alert alert-danger alert-dismissible">
-                      <button type="button" class="close" ng-click="main.clearAlert()" aria-hidden="true">&times;</button>
-                      <h4><i class="icon fa fa-ban"></i>{{main.mainData.alertTitle || 'Alert'}}</h4>
-                      {{main.mainData.alert}}
-                  </div>
-                  <div ng-show="main.mainData.alertType === 'alert-info'" class="alert alert-info alert-dismissible">
-                      <button type="button" class="close" ng-click="main.clearAlert()" aria-hidden="true">&times;</button>
-                      <h4><i class="icon fa fa-info"></i>{{main.mainData.alertTitle || 'Alert'}}</h4>
-                      {{main.mainData.alert}}
-                  </div>
-                  <div ng-show="main.mainData.alertType === 'alert-warning'" class="alert alert-warning alert-dismissible">
-                      <button type="button" class="close" ng-click="main.clearAlert()" aria-hidden="true">&times;</button>
-                      <h4><i class="icon fa fa-warning"></i>{{main.mainData.alertTitle || 'Alert'}}</h4>
-                      {{main.mainData.alert}}
-                  </div>
-                  <div ng-show="main.mainData.alertType === 'alert-success'" class="alert alert-success alert-dismissible">
-                      <button type="button" class="close" ng-click="main.clearAlert()" aria-hidden="true">&times;</button>
-                      <h4><i class="icon fa fa-check"></i>{{main.mainData.alertTitle || 'Alert'}}</h4>
-                      {{main.mainData.alert}}
-                  </div>
-              </div>
-          </div>
-      </div>
+         <!-- Main content -->
+         <section ng-view>
 
-    <!-- Main content -->
-    <section ng-view class="content">
+             <!-- Your Page Content Here -->
 
-      <!-- Your Page Content Here -->
-
-    </section>
+         </section>
+    </div>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
