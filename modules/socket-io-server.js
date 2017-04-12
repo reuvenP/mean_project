@@ -3,7 +3,8 @@
  */
 
 var mqtt = require('mqtt');
-var client  = mqtt.connect('mqtt://localhost');
+var clientId = 'mqtt_3000';
+var client  = mqtt.connect('mqtt://localhost', {clientId: clientId});
 var dal_messages = require('./dal_messages');
 var dal_rooms = require('./dal_rooms');
 var dal_users = require('./dal_users');
@@ -15,8 +16,14 @@ client.on('connect', function () {
 
 client.on('message', function (topic, message) {
     // message is Buffer
-    console.log(message.toString());
-    //TODO: handle recived msg
+    //console.log(topic, message.toString());
+    if (topic == 'msgs') {
+        var stringBuf = message.toString('utf-8');
+        var obj = JSON.parse(stringBuf);
+        if (obj.clientId != clientId) {
+            io.to(room.name).emit('send_msg', newMsg);
+        }
+    }
 });
 
 var configSocketIo = function(httpServer, session) {
@@ -64,7 +71,7 @@ var configSocketIo = function(httpServer, session) {
                         dal_messages.addMessage(userId, msg.room, msg.text, msg.link, msg.img, msg.isOnlyForConnected, function (err2, newMsg) {
                             if (!err2) {
                                 io.to(room.name).emit('send_msg', newMsg);
-                                client.publish('msgs', JSON.stringify(newMsg));
+                                client.publish('msgs_back', JSON.stringify(newMsg));
                             }
                         })
                     }
