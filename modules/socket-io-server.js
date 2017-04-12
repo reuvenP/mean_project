@@ -4,28 +4,11 @@
 
 var mqtt = require('mqtt');
 var clientId = 'mqtt_3000';
-var client  = mqtt.connect('mqtt://localhost', {clientId: clientId});
 var dal_messages = require('./dal_messages');
 var dal_rooms = require('./dal_rooms');
 var dal_users = require('./dal_users');
 var dal_users_rooms = require('./dal_user_rooms');
 
-client.on('connect', function () {
-    client.subscribe('msgs');
-});
-
-client.on('message', function (topic, message) {
-    // message is Buffer
-    //console.log(topic, message.toString());
-    if (topic == 'msgs') {
-        var stringBuf = message.toString('utf-8');
-        var obj = JSON.parse(stringBuf);
-        if (obj.clientId != clientId) {
-            obj.clientId = undefined;
-            io.to(room.name).emit('send_msg', obj);
-        }
-    }
-});
 
 var configSocketIo = function(httpServer, session) {
     var sharedsession = require("express-socket.io-session");
@@ -79,6 +62,26 @@ var configSocketIo = function(httpServer, session) {
                 }
             });
         });
+    });
+
+
+    var client  = mqtt.connect('mqtt://localhost', {clientId: clientId});
+
+    client.on('connect', function () {
+        client.subscribe('msgs');
+    });
+
+    client.on('message', function (topic, message) {
+        // message is Buffer
+        //console.log(topic, message.toString());
+        if (topic == 'msgs') {
+            var stringBuf = message.toString('utf-8');
+            var obj = JSON.parse(stringBuf);
+            if (obj.clientId != clientId) {
+                obj.clientId = undefined;
+                io.to(room.name).emit('send_msg', obj);
+            }
+        }
     });
 };
 
