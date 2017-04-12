@@ -32,6 +32,12 @@ app.config(function ($routeProvider) {
             controllerAs: 'home'
         })
 
+        .when('/rooms', {
+            templateUrl: '/client_app/views/rooms.html',
+            controller: 'roomsCtrl',
+            controllerAs: 'rooms'
+        })
+
         .otherwise({
             redirect: '/'
         });
