@@ -2,13 +2,23 @@ angular.module('myApp').factory('loginService', ['$http', '$q', 'pageService', l
 function loginService($http, $q, pageService) {
     var services = {};
 
-    services.login = function(username, hashedLogin) {
+    services.login = function(username, hashedLogin, rememberMe) {
+        var deferred = $q.defer();
         var req = {
             method: 'POST',
             url: '/login/enter',
-            data: {username: username, hashedLogin: hashedLogin}
+            data: {username: username, hashedLogin: hashedLogin, rememberMe: rememberMe}
         };
-        return $http(req);
+        $http(req).then(
+            function(res) {
+                pageService.mainData.myUser = res.data;
+                deferred.resolve(res.data);
+            },
+            function(res) {
+                deferred.reject(res);
+            }
+        );
+        return deferred.promise;
     };
 
     services.logout = function(username, hashedLogin) {

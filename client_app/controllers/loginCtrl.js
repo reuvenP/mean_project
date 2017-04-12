@@ -3,6 +3,7 @@ function loginCtrl($scope, pageService, usersService, loginService){
     var vm = this;
     vm.mainData = pageService.mainData;
     pageService.setPageTitle('Login');
+    vm.rememberMe = true; //default
     $('.side-nav li').removeClass('active');
 
     vm.login = function() {
@@ -11,9 +12,8 @@ function loginCtrl($scope, pageService, usersService, loginService){
         }
         var hash = CryptoJS.SHA1(vm.username + ':' + vm.password + ':' + vm.random);
         var hash_Base64 = hash.toString(CryptoJS.enc.Base64);
-        loginService.login(vm.username, hash_Base64).then(
+        loginService.login(vm.username, hash_Base64, vm.rememberMe).then(
             function(res) {
-                vm.mainData.myUser = res.data;
                 pageService.setNextAlert($scope, 'Welcome ' + vm.mainData.myUser.name, 'info', 'Hello!');
                 gotoHome();
             },

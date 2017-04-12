@@ -48,6 +48,9 @@ var userAuthenticator = function (req, res, next) {
             if (err) {
                 return res.status(500).send("Login error for '" + user.username + "':" + err);
             }
+            if (!req.rememberMe) {
+                req.session.cookie.expires = false;
+            }
             debug("Logged as: " + user.username);
             return res.json(user);
         });

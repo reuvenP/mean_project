@@ -7,6 +7,7 @@ var debug = require('debug')('nodejs-project:login');
 
 //login link
 router.post('/enter', function (req, res, next) {
+    req.rememberMe = req.body.rememberMe || false;
     login.authenticator(req, res, next);
 });
 
