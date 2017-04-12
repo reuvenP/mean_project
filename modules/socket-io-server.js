@@ -21,7 +21,8 @@ client.on('message', function (topic, message) {
         var stringBuf = message.toString('utf-8');
         var obj = JSON.parse(stringBuf);
         if (obj.clientId != clientId) {
-            io.to(room.name).emit('send_msg', newMsg);
+            obj.clientId = undefined;
+            io.to(room.name).emit('send_msg', obj);
         }
     }
 });
