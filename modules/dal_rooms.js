@@ -31,7 +31,7 @@ var getLastTwentyMsgsOfRoom = function (roomId, then) {
 };
 
 var getMsgsByRoom = function (roomId, then) {
-    Message.find({room: roomId}, then);
+    Message.find({room: roomId, isOnlyForConnected: false}, then);
 };
 
 var getRoomById = function (roomId, then) {
