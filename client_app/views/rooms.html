@@ -1,1 +1,37 @@
 <div class="row" ng-show="rooms.mainData.myUser">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">My Rooms</h3>
+
+                <div class="box-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                        <input type="text" name="table_search" ng-model="users.searchFilter.name" class="form-control pull-right" placeholder="Search by name">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover">
+                    <tbody>
+                    <tr>
+                        <th>Name</th>
+                        <th>Admin</th>
+                        <th>Date Created</th>
+                    </tr>
+                    <tr ng-repeat="room in rooms.my_rooms | filter: rooms.searchFilter">
+                        <td>{{room.name}}</td>
+                        <td>{{room.admin_name}}</td>
+                        <td>{{room.date_created}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+</div>

@@ -5,6 +5,7 @@ angular.module('myApp').controller('roomsController', ['$scope', 'pageService', 
 function roomsController($scope, pageService, roomsService, usersService) {
     var vm = this;
     vm.mainData = pageService.mainData;
+    vm.searchFilter = {};
 
     pageService.setPageTitle('Rooms Management');
 
