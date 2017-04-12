@@ -106,8 +106,20 @@ function chatController($scope, pageService, chatService, usersService, $timeout
         }, 0);
     };
 
+    var setContentHeight = function() {
+        $timeout(function() {
+            var minHeight = $('.wrapper').get(0).clientHeight;
+            if (minContentHeight > minHeight) {
+                minHeight = minContentHeight;
+            }
+            $('.content-wrapper').get(0).style.minHeight = minHeight + 'px';
+        }, 0);
+    };
+
     var openRoom = function(room) {
         room.loading = true;
+        setContentHeight();
+
         chatService.connectToRoom(room._id, $scope, newMsgCallback).then(
             function () {
                 room.showRoom = true;
@@ -148,6 +160,8 @@ function chatController($scope, pageService, chatService, usersService, $timeout
 
     vm.closeRoom = function(room) {
         chatService.leaveRoom(room._id);
+        room.showRoom = false;
+        pageService.clearAlert();
         // chatService.disconnectFromRoom(room._id).then(
         //     function() {
         //         room.showRoom = false;
@@ -162,6 +176,7 @@ function chatController($scope, pageService, chatService, usersService, $timeout
     vm.toggleExpanded = function(room) {
         var currentStatus = room.isExpanded || false;
         room.isExpanded = !currentStatus;
+        setContentHeight();
     };
 
     usersService.refreshUsers().then(
@@ -181,4 +196,6 @@ function chatController($scope, pageService, chatService, usersService, $timeout
             pageService.showResponseError(res);
         }
     );
+
+    var minContentHeight = $('.content-wrapper').get(0).clientHeight;
 }

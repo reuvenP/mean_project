@@ -30,7 +30,6 @@ sessionConnect.open(sessConnStr);
 
 var app = express();
 
-
 // view engine setup
 app.set('views', path.join(__dirname, 'ejs_templates'));
 app.set('view engine', 'ejs');
