@@ -94,6 +94,15 @@ function chatController($scope, pageService, chatService, usersService, $timeout
             $('#' + roomId + ' img').removeAttr('title');
             var body = $('#' + roomId + ' .direct-chat-messages');
             body.scrollTop(body[0].scrollHeight - body[0].clientHeight);
+
+            //play sound for async message from other user (not offline message)
+            if (event) {
+                var messages = vm.getRoom(roomId).messages;
+                if (messages.length > 0 && messages[messages.length - 1].sender != vm.mainData.myUser._id) {
+                    var audio = new Audio('public/sound/newMsg.mp3');
+                    audio.play();
+                }
+            }
         }, 0);
     };
 

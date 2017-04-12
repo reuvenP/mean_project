@@ -11,6 +11,9 @@ var connectMongo = require('connect-mongo');
 var passport = require('passport');
 var configSocketIo = require('./modules/socket-io-server');
 
+// Use native promises
+mongoose.Promise = global.Promise;
+
 var MongoStore = connectMongo(session);
 var sessConnStr = "mongodb://localhost/project_sessions";
 var sessionConnect = mongoose.createConnection();
