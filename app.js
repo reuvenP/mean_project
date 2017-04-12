@@ -51,8 +51,8 @@ var shared_session = session({
     saveUninitialized: false,
     rolling: true,
     store: new MongoStore({ mongooseConnection: sessionConnect }),
-    cookie: { maxAge: 3600000, httpOnly: true, sameSite: true }
-})
+    cookie: { maxAge: 604800000, httpOnly: true, sameSite: true } //cookie for one week
+});
 app.use(shared_session);
 
 app.httpServerReady = function(httpServer) {
