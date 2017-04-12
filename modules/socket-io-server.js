@@ -55,7 +55,6 @@ var configSocketIo = function(httpServer, session) {
                         dal_messages.addMessage(userId, msg.room, msg.text, msg.link, msg.img, msg.isOnlyForConnected, function (err2, newMsg) {
                             if (!err2) {
                                 io.to(room.name).emit('send_msg', newMsg);
-                                newMsg.room_name = room.name;
                                 client.publish('msgs_back', JSON.stringify(newMsg));
                             }
                         })
@@ -80,7 +79,11 @@ var configSocketIo = function(httpServer, session) {
             var obj = JSON.parse(stringBuf);
             if (obj.clientId != clientId) {
                 obj.clientId = undefined;
-                io.to(obj.room_name).emit('send_msg', obj);
+                dal_rooms.getRoomById(obj.room, function (err, room) {
+                    if (!err) {
+                        io.to(room.name).emit('send_msg', obj);
+                    }
+                });
             }
         }
     });
