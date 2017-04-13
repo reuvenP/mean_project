@@ -45,6 +45,19 @@ var getPendingRoomsOfUser = function (userId, then) {
     });
 };
 
+var getAvailableRoomsOfUser = function (userId, then) {
+    UserRooms.find({userId: userId}, function (err, userrooms) {
+        if (err) return then(err, []);
+        arr = [];
+        for (var i = 0; i < userrooms.length; i++) {
+            arr.push(userrooms[i].roomId);
+        }
+        Room.find({'_id': { $nin: arr}}).populate('admin').exec(function(err, rooms){
+            if (err) return then(err, []);
+            return then(null, rooms)});
+    });
+};
+
 var confirmRoomUser = function (userId, roomId, then) {
     UserRooms.findOne({userId: userId, roomId: roomId}, function (err, userRoom) {
         if (err) return then(err);
@@ -62,5 +75,6 @@ exporter.addUserRoom = addUserRoom;
 exporter.getRoomsOfUser = getRoomsOfUser;
 exporter.confirmRoomUser = confirmRoomUser;
 exporter.getPendingRoomsOfUser = getPendingRoomsOfUser;
+exporter.getAvailableRoomsOfUser = getAvailableRoomsOfUser;
 
 module.exports = exporter;

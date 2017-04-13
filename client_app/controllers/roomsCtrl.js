@@ -6,6 +6,8 @@ function roomsController($scope, pageService, roomsService, usersService, chatSe
     var vm = this;
     vm.mainData = pageService.mainData;
     vm.searchFilter = {};
+    vm.pendingSearchFilter = {};
+    vm.otherSearchFilter = {};
     vm.usersList = usersService.usersList;
     vm.my_rooms = roomsService.my_rooms;
     vm.my_admin_rooms = roomsService.my_admin_rooms;
@@ -14,6 +16,7 @@ function roomsController($scope, pageService, roomsService, usersService, chatSe
 
     roomsService.getMyRooms();
     roomsService.getMyPendingRooms();
+    roomsService.getMyOtherRooms();
 
 
     pageService.setPageTitle('Rooms Management');

@@ -43,7 +43,25 @@ function roomsService($http, $q, $rootScope) {
         return deferred.promise;
     };
 
+    var getMyOtherRooms = function () {
+        services.other_rooms.length = 0;
+        var deferred = $q.defer();
+        $http.get('/rooms/getAvailableRoomsOfUser').then(
+            function (res) {
+                for (var i = 0; i < res.data.length; i++) {
+                    services.other_rooms[i] = res.data[i];
+                }
+                deferred.resolve();
+            }, function (res) {
+                deferred.reject(res);
+            }
+        );
+
+        return deferred.promise;
+    };
+
     services.getMyPendingRooms = getMyPendingRooms;
     services.getMyRooms = getMyRooms;
+    services.getMyOtherRooms = getMyOtherRooms;
     return services;
 }

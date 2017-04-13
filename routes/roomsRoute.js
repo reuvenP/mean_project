@@ -45,4 +45,22 @@ router.get('/getPendingRoomsOfUser', function (req, res, next) {
     });
 });
 
+router.get('/getAvailableRoomsOfUser', function (req, res, next) {
+    if (!req.user) {
+        return res.status(401).send('You must login first');
+    }
+
+    userRooms.getAvailableRoomsOfUser(req.user._id, function (error, rooms) {
+        if (error) {
+            return res.status(500).send(error);
+        }
+
+        var roomsToSend = [];
+        for (var i = 0; i < rooms.length; i++) {
+            roomsToSend.push({_id: rooms[i]._id, name: rooms[i].name, admin_name: rooms[i].admin.name, admin_mail: rooms[i].admin.email, date_created: rooms[i].dateCreated});
+        }
+        res.json(roomsToSend);
+    });
+});
+
 module.exports = router;
