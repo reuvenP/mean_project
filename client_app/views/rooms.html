@@ -27,7 +27,7 @@
                         <td>{{room.name}}</td>
                         <td>{{room.admin_name}}</td>
                         <td><a ng-href="mailto:{{room.admin_mail}}">{{room.admin_mail}}</a></td>
-                        <td>{{room.date_created}}</td>
+                        <td>{{rooms.formatDateTime(room.date_created)}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -65,7 +65,7 @@
                         <td>{{room.name}}</td>
                         <td>{{room.admin_name}}</td>
                         <td><a ng-href="mailto:{{room.admin_mail}}">{{room.admin_mail}}</a></td>
-                        <td>{{room.date_created}}</td>
+                        <td>{{rooms.formatDateTime(room.date_created)}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -103,7 +103,7 @@
                         <td>{{room.name}}</td>
                         <td>{{room.admin_name}}</td>
                         <td><a ng-href="mailto:{{room.admin_mail}}">{{room.admin_mail}}</a></td>
-                        <td>{{room.date_created}}</td>
+                        <td>{{rooms.formatDateTime(room.date_created)}}</td>
                         <td>
                             <button type="button" class="btn btn-primary"  ng-click="rooms.join_room(room._id)">
                                 Join <span class="glyphicon glyphicon-edit"> </span>

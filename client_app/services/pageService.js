@@ -81,5 +81,19 @@ function pageService($http, $q, $uibModal) {
         }
     };
 
+    services.formatDateTime = function(dateString) {
+        var date = new Date(dateString);
+        var monthNames = [
+            "January", "February", "March",
+            "April", "May", "June", "July",
+            "August", "September", "October",
+            "November", "December"
+        ];
+
+        var monthIndex = date.getMonth();
+        return ('00' + date.getDate()).slice(-2) + ' ' + monthNames[monthIndex] + ' ' +
+            ('00' + date.getHours()).slice(-2) + ':' + ('00' + date.getMinutes()).slice(-2);
+    };
+
     return services;
 }

@@ -14,6 +14,7 @@ function roomsController($scope, pageService, roomsService, usersService, chatSe
     vm.my_pending_rooms = roomsService.my_pending_rooms;
     vm.other_rooms = roomsService.other_rooms;
     vm.roomToAdd = '';
+    vm.formatDateTime = pageService.formatDateTime;
 
     vm.join_room = function (roomId) {
         pageService.clearAlert();

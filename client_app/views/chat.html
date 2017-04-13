@@ -46,7 +46,7 @@
                          ng-class="['direct-chat-msg', {'left': chat.isMyMessage(message), 'right': !chat.isMyMessage(message)}]">
                         <div class="direct-chat-info clearfix">
                             <span ng-class="['direct-chat-name', {'pull-left': chat.isMyMessage(message), 'pull-right': !chat.isMyMessage(message)}]">{{chat.senderName(message.sender)}}</span>
-                            <span ng-class="['direct-chat-timestamp', {'pull-right': chat.isMyMessage(message), 'pull-left': !chat.isMyMessage(message)}]"> {{ chat.formatDate(message.submitDate) }}</span>
+                            <span ng-class="['direct-chat-timestamp', {'pull-right': chat.isMyMessage(message), 'pull-left': !chat.isMyMessage(message)}]"> {{ chat.formatDateTime(message.submitDate) }}</span>
                         </div>
                         <!-- /.direct-chat-info -->
                         <img class="direct-chat-img" ng-attr-src="{{chat.senderImage(message.sender)}}"

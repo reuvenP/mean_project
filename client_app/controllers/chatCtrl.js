@@ -11,19 +11,7 @@ function chatController($scope, pageService, chatService, usersService, $timeout
         return chatService.getRoom(roomId);
     };
 
-    vm.formatDate = function(dateString) {
-        var date = new Date(dateString);
-        var monthNames = [
-            "January", "February", "March",
-            "April", "May", "June", "July",
-            "August", "September", "October",
-            "November", "December"
-        ];
-
-        var monthIndex = date.getMonth();
-        return date.getDate() + ' ' + monthNames[monthIndex] + ' ' +
-               ('00' + date.getHours()).slice(-2) + ':' + ('00' + date.getMinutes()).slice(-2);
-    };
+    vm.formatDateTime = pageService.formatDateTime;
 
     vm.isMyMessage = function(message) {
         return message.sender == vm.mainData.myUser._id;

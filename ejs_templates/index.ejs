@@ -84,15 +84,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
           var input = $('#' + roomId + " input[type=file]").get(0);
           var file = input.files[0];
           if (file) {
+              //reset the input so it is possible to select again the same file
+              input.type = '';
+              input.type = 'file';
               var htmlArea = $('#' + roomId + " .htmlarea");
               var reader = new FileReader();
               reader.addEventListener("load", function () {
                   if (reader.result.startsWith('data:image')) {
                       var editor = htmlArea.data('wysihtml5').editor;
                       editor.composer.commands.exec("insertImage", reader.result);
-                      //reset the input so it is possible to select again the same file
-                      input.type = ''
-                      input.type = 'file'
                   }
                   else {
                       alert("Invalid image!");
