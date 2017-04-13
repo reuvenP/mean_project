@@ -9,7 +9,5 @@ function roomsService($http, $q, $rootScope) {
     services.my_pending_rooms = [];
     services.other_rooms = [];
 
-
-
     return services;
 }

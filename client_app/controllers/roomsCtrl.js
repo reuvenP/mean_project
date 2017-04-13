@@ -7,6 +7,8 @@ function roomsController($scope, pageService, roomsService, usersService, chatSe
     vm.mainData = pageService.mainData;
     vm.searchFilter = {};
     vm.usersList = usersService.usersList;
+    vm.my_rooms = roomsService.my_rooms;
+
 
     pageService.setPageTitle('Rooms Management');
 
