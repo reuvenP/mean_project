@@ -38,6 +38,12 @@ app.config(function ($routeProvider) {
             controllerAs: 'rooms'
         })
 
+        .when('/webcam', {
+            templateUrl: '/client_app/views/webcam.html',
+            controller: 'webcamController',
+            controllerAs: 'webcam'
+        })
+
         .otherwise({
             redirect: '/'
         });
