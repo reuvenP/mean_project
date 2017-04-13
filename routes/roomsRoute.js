@@ -81,11 +81,21 @@ router.post('/add_room/:roomName', function (req, res, next) {
         return res.status(401).send('You must login first');
     }
 
-    rooms.addRoom(req.params.roomName, req.user._id,function (error) {
+    rooms.addRoom(req.params.roomName, req.user._id,function (error, room) {
         if (error) {
             return res.status(500).send(error);
         }
-        res.status(200).send('OK');
+        userRooms.addUserRoom(req.user._id, room._id, function (err) {
+            if (err) {
+                return res.status(500).send(err);
+            }
+            userRooms.confirmRoomUser(req.user._id, room._id, function (e) {
+                if (e) {
+                    return res.status(500).send(e);
+                }
+                res.status(200).send('OK');
+            });
+        });
     });
 });
 
