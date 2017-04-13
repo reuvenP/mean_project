@@ -1,7 +1,7 @@
-angular.module('myApp').factory('chatService', ['$http', '$q', '$rootScope', chatService]);
-function chatService($http, $q, $rootScope) {
+angular.module('myApp').factory('chatService', ['$http', '$q', '$rootScope', 'roomsService', chatService]);
+function chatService($http, $q, $rootScope, roomsService) {
     var services = {};
-    services.rooms = [];
+    services.rooms = roomsService.my_rooms;
     var socket = io();
 
     socket.on('send_msg', function(data){
@@ -22,26 +22,19 @@ function chatService($http, $q, $rootScope) {
     };
 
     services.getRooms = function () {
-        services.rooms.length = 0;
-        var deferred = $q.defer();
-        $http.get('/chat/getRooms').then(
-            function (res) {
-                for (var i = 0; i < res.data.length; i++) {
-                    services.rooms[i] = res.data[i];
-                    services.rooms[i].messages = [];
-                }
-                deferred.resolve();
-            }, function (res) {
-                deferred.reject(res);
+        var promise = roomsService.getMyRooms();
+        promise.then(function() {
+            for (var i = 0; i < roomsService.my_rooms.length; i++) { //those rooms are referenced by services.rooms
+                roomsService.my_rooms[i].messages = [];
             }
-        );
+        });
 
-        return deferred.promise;
+        return promise;
     };
 
     var getRoomOfflineMessages = function (roomId) {
         var deferred = $q.defer();
-        $http.get('/chat/roomOfflineMessages/' + roomId).then(
+        $http.get('/chat/lastTwentyMessages/' + roomId).then(
             function (res) {
                 var messagesList = services.getRoom(roomId).messages;
                 messagesList.length = 0;
