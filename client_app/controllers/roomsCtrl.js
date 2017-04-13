@@ -13,6 +13,7 @@ function roomsController($scope, pageService, roomsService, usersService, chatSe
     vm.my_admin_rooms = roomsService.my_admin_rooms;
     vm.my_pending_rooms = roomsService.my_pending_rooms;
     vm.other_rooms = roomsService.other_rooms;
+    vm.roomToAdd = '';
 
     vm.join_room = function (roomId) {
         pageService.clearAlert();
@@ -22,6 +23,20 @@ function roomsController($scope, pageService, roomsService, usersService, chatSe
                 roomsService.refreshRoomsLists();
             }, function (res) {
                 pageService.showAlert(res.status + ' - ' + res.statusText + ": " + (res.data.message || res.data.errmsg || res.data), 'danger', 'Error');
+            }
+        )
+    };
+
+    vm.addRoom = function() {
+        pageService.clearAlert();
+        roomsService.addRoom(vm.roomToAdd).then(
+            function (res) {
+                pageService.showAlert('Room added successfully', 'success', 'Success');
+                roomsService.refreshRoomsLists();
+                vm.roomToAdd = '';
+            }, function (res) {
+                pageService.showAlert(res.status + ' - ' + res.statusText + ": " + (res.data.message || res.data.errmsg || res.data), 'danger', 'Error');
+                vm.roomToAdd = '';
             }
         )
     };

@@ -79,10 +79,24 @@ function roomsService($http, $q, $rootScope) {
         return deferred.promise;
     };
 
+    var addRoom = function (roomName) {
+        var deferred = $q.defer();
+        $http.post('/rooms/add_room/' + roomName).then(
+            function (res) {
+                deferred.resolve();
+            }, function (res) {
+                deferred.reject(res);
+            }
+        );
+
+        return deferred.promise;
+    };
+
     services.getMyPendingRooms = getMyPendingRooms;
     services.getMyRooms = getMyRooms;
     services.getMyOtherRooms = getMyOtherRooms;
     services.refreshRoomsLists = refreshRoomsLists;
     services.join_room = join_room;
+    services.addRoom = addRoom;
     return services;
 }
