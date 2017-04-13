@@ -33,14 +33,12 @@ router.get('/getRooms', function(req, res, next) {
     })
 });
 
-router.get('/roomOfflineMessages/:roomId', function(req, res, next) {
+router.get('/lastTwentyMessages/:roomId', function(req, res, next) {
     if (!req.user) {
         return res.status(401).send('You must login first for using the chat');
     }
 
-    //TODO get only mesaage that were marked for offline, and the current user didn't got yet
-    //since he was offline when they sent
-    dal_rooms.getMsgsByRoom(req.params.roomId, function(error, messages) {
+    dal_rooms.getLastTwentyMsgsOfRoom(req.params.roomId, function(error, messages) {
         if (error) {
             return res.status(500).send(error);
         }

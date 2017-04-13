@@ -1,17 +1,15 @@
-angular.module('myApp').controller('chatController', ['$scope', 'pageService', 'chatService', 'usersService', '$timeout', chatController]);
-function chatController($scope, pageService, chatService, usersService, $timeout) {
+angular.module('myApp').controller('chatController', ['$scope', '$timeout', 'pageService', 'chatService', 'usersService', 'roomsService', chatController]);
+function chatController($scope, $timeout, pageService, chatService, usersService, roomsService) {
     var vm = this;
     vm.mainData = pageService.mainData;
+    vm.rooms = chatService.rooms;
+    vm.formatDateTime = pageService.formatDateTime;
 
     pageService.setPageTitle('Chat Rooms', 'כאן אפשר לבקש כפית סוכר עד מחר');
-
-    vm.rooms = chatService.rooms;
 
     vm.getRoom = function(roomId) {
         return chatService.getRoom(roomId);
     };
-
-    vm.formatDateTime = pageService.formatDateTime;
 
     vm.isMyMessage = function(message) {
         return message.sender == vm.mainData.myUser._id;
@@ -172,9 +170,6 @@ function chatController($scope, pageService, chatService, usersService, $timeout
             chatService.getRooms().then(
                 function(res) {
                     pageService.clearAlert();
-                    // for (var i = 0; i < vm.rooms.length; i++) {
-                    //     vm[vm.rooms[i]._id] = {};
-                    // }
                 },
                 function (res) {
                     pageService.showResponseError(res);

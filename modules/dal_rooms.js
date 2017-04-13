@@ -20,7 +20,7 @@ var getRooms = function (then) {
 };
 
 var getLastTwentyMsgsOfRoom = function (roomId, then) {
-    Message.find({room: roomId},[], {limit: 20, sort: {submitDate: -1}}, function (err, msgs) {
+    Message.find({room: roomId, isOnlyForConnected: false},[], {limit: 20, sort: {submitDate: -1}}, function (err, msgs) {
         if (err) return then(err, msgs);
         var newMsgs = [];
         for (var i = msgs.length - 1; i >=0; i--) {
