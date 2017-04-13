@@ -161,15 +161,14 @@
 </div>
 
 <div class="form-group">
-    <div class="col-md-7 inputGroupContainer">
+    <label class="col-md-2 control-label">New Room Name:</label>
+    <div class="col-md-5 inputGroupContainer">
         <div class="input-group">
-            <label class="col-md-3 control-label">Name</label>
             <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
             <input placeholder="Room Name" class="form-control" type="text"
                    ng-model="rooms.roomToAdd">
         </div>
     </div>
-
     <button ng-click="rooms.addRoom()" type="button" class="btn btn-primary">Add Room <span
             class="glyphicon glyphicon-plus"></span></button>
 </div>
