@@ -2,8 +2,19 @@
  * Created by reuvenp on 15/03/2017.
  */
 
+function makeid()
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 5; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+
 var mqtt = require('mqtt');
-var clientId = 'mqtt_3000';
+var clientId = 'mqtt_' + makeid();
 var dal_messages = require('./dal_messages');
 var dal_rooms = require('./dal_rooms');
 var dal_users = require('./dal_users');
