@@ -9,5 +9,41 @@ function roomsService($http, $q, $rootScope) {
     services.my_pending_rooms = [];
     services.other_rooms = [];
 
+    var getMyRooms = function () {
+        services.my_rooms.length = 0;
+        var deferred = $q.defer();
+        $http.get('/rooms/getRoomsOfUser').then(
+            function (res) {
+                for (var i = 0; i < res.data.length; i++) {
+                    services.my_rooms[i] = res.data[i];
+                }
+                deferred.resolve();
+            }, function (res) {
+                deferred.reject(res);
+            }
+        );
+
+        return deferred.promise;
+    };
+
+    var getMyPendingRooms = function () {
+        services.my_pending_rooms.length = 0;
+        var deferred = $q.defer();
+        $http.get('/rooms/getPendingRoomsOfUser').then(
+            function (res) {
+                for (var i = 0; i < res.data.length; i++) {
+                    services.my_pending_rooms[i] = res.data[i];
+                }
+                deferred.resolve();
+            }, function (res) {
+                deferred.reject(res);
+            }
+        );
+
+        return deferred.promise;
+    };
+
+    services.getMyPendingRooms = getMyPendingRooms;
+    services.getMyRooms = getMyRooms;
     return services;
 }

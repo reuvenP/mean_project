@@ -2,6 +2,9 @@
  * Created by reuvenp on 4/2/2017.
  */
 var mongo = require("mongoose");
+require('./user');
+mongo.model('User');
+
 var Schema = mongo.Schema;
 var debug = require("debug")("sess:message");
 
@@ -21,7 +24,7 @@ db.open(userConnStr);
 var ObjectId = Schema.ObjectId;
 var Room = db.model('Room', new Schema({
     name: {type: String, required: true, unique: true},
-    admin: {type: ObjectId, required: true},
+    admin: {type: ObjectId, required: true, ref: 'User'},
     dateCreated: Date
 }));
 

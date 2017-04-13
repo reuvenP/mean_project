@@ -65,11 +65,13 @@ var root = require('./routes/root');
 var login = require('./routes/loginRoute');
 var users = require('./routes/usersRoute');
 var chat = require('./routes/chatRoute');
+var rooms = require('./routes/roomsRoute');
 
 app.use('/', root);
 app.use('/login', login);
 app.use('/users', users);
 app.use('/chat', chat);
+app.use('/rooms', rooms);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

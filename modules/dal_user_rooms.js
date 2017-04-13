@@ -26,12 +26,22 @@ var getRoomsOfUser = function (userId, then) {
         for (var i = 0; i < userrooms.length; i++) {
             arr.push(userrooms[i].roomId);
         }
-        Room.find({
-            '_id': { $in: arr}
-        }, function(err, rooms){
+        Room.find({'_id': { $in: arr}}).populate('admin').exec(function(err, rooms){
             if (err) return then(err, []);
-            return then(null, rooms);
-        })
+            return then(null, rooms)});
+    });
+};
+
+var getPendingRoomsOfUser = function (userId, then) {
+    UserRooms.find({userId: userId, isConfirmed: false}, function (err, userrooms) {
+        if (err) return then(err, []);
+        arr = [];
+        for (var i = 0; i < userrooms.length; i++) {
+            arr.push(userrooms[i].roomId);
+        }
+        Room.find({'_id': { $in: arr}}).populate('admin').exec(function(err, rooms){
+            if (err) return then(err, []);
+            return then(null, rooms)});
     });
 };
 
@@ -51,5 +61,6 @@ var exporter = {};
 exporter.addUserRoom = addUserRoom;
 exporter.getRoomsOfUser = getRoomsOfUser;
 exporter.confirmRoomUser = confirmRoomUser;
+exporter.getPendingRoomsOfUser = getPendingRoomsOfUser;
 
 module.exports = exporter;
