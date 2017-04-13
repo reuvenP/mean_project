@@ -10,7 +10,7 @@ function roomsController($scope, pageService, roomsService, usersService, chatSe
     vm.otherSearchFilter = {};
     vm.usersList = usersService.usersList;
     vm.my_rooms = roomsService.my_rooms;
-    vm.my_admin_rooms = roomsService.my_admin_rooms;
+    vm.waiting_requests = roomsService.waiting_requests;
     vm.my_pending_rooms = roomsService.my_pending_rooms;
     vm.other_rooms = roomsService.other_rooms;
     vm.roomToAdd = '';
