@@ -60,8 +60,29 @@ function roomsService($http, $q, $rootScope) {
         return deferred.promise;
     };
 
+    var refreshRoomsLists = function () {
+        getMyOtherRooms();
+        getMyPendingRooms();
+        getMyRooms();
+    };
+
+    var join_room = function (roomId) {
+        var deferred = $q.defer();
+        $http.post('/rooms/join_room/' + roomId).then(
+            function (res) {
+                deferred.resolve();
+            }, function (res) {
+                deferred.reject(res);
+            }
+        );
+
+        return deferred.promise;
+    };
+
     services.getMyPendingRooms = getMyPendingRooms;
     services.getMyRooms = getMyRooms;
     services.getMyOtherRooms = getMyOtherRooms;
+    services.refreshRoomsLists = refreshRoomsLists;
+    services.join_room = join_room;
     return services;
 }

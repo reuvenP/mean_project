@@ -63,4 +63,17 @@ router.get('/getAvailableRoomsOfUser', function (req, res, next) {
     });
 });
 
+router.post('/join_room/:roomId', function (req, res, next) {
+    if (!req.user) {
+        return res.status(401).send('You must login first');
+    }
+
+    userRooms.addUserRoom(req.user._id, req.params.roomId, function (error) {
+        if (error) {
+            return res.status(500).send(error);
+        }
+        res.status(200).send('OK');
+    });
+});
+
 module.exports = router;

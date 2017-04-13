@@ -14,6 +14,18 @@ function roomsController($scope, pageService, roomsService, usersService, chatSe
     vm.my_pending_rooms = roomsService.my_pending_rooms;
     vm.other_rooms = roomsService.other_rooms;
 
+    vm.join_room = function (roomId) {
+        pageService.clearAlert();
+        roomsService.join_room(roomId).then(
+            function (res) {
+                pageService.showAlert('Your Request Has Been Sent', 'success', 'Success');
+                roomsService.refreshRoomsLists();
+            }, function (res) {
+                pageService.showAlert(res.status + ' - ' + res.statusText + ": " + (res.data.message || res.data.errmsg || res.data), 'danger', 'Error');
+            }
+        )
+    };
+
     roomsService.getMyRooms();
     roomsService.getMyPendingRooms();
     roomsService.getMyOtherRooms();
