@@ -42,10 +42,22 @@ function roomsController($scope, pageService, roomsService, usersService, chatSe
         )
     };
 
+    vm.confirm = function (userId, roomId) {
+        pageService.clearAlert();
+        roomsService.confirm(userId, roomId).then(
+            function (res) {
+                pageService.showAlert('Confirmed', 'success', 'Success');
+                roomsService.refreshRoomsLists();
+            }, function (res) {
+                pageService.showAlert(res.status + ' - ' + res.statusText + ": " + (res.data.message || res.data.errmsg || res.data), 'danger', 'Error');
+            }
+        )
+    };
+
     roomsService.getMyRooms();
     roomsService.getMyPendingRooms();
     roomsService.getMyOtherRooms();
-
+    roomsService.getWaitingRequests();
 
     pageService.setPageTitle('Rooms Management');
 

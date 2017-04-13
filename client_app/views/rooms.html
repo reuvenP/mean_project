@@ -125,7 +125,7 @@
 
                 <div class="box-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" ng-model="rooms.otherSearchFilter.name" class="form-control pull-right" placeholder="Search by name">
+                        <input type="text" name="table_search" ng-model="rooms.waiting_requests.room_name" class="form-control pull-right" placeholder="Search by name">
                         <div class="input-group-btn">
                             <button class="btn btn-default"><i class="fa fa-search"></i></button>
                         </div>
@@ -137,19 +137,17 @@
                 <table class="table table-hover">
                     <tbody>
                     <tr>
-                        <th>Name</th>
-                        <th>Admin</th>
-                        <th>Admin Email</th>
-                        <th>Date Created</th>
+                        <th>Room Name</th>
+                        <th>User Name</th>
+                        <th>User Email</th>
                     </tr>
-                    <tr ng-repeat="room in rooms.other_rooms | filter: rooms.otherSearchFilter">
-                        <td>{{room.name}}</td>
-                        <td>{{room.admin_name}}</td>
-                        <td><a ng-href="mailto:{{room.admin_mail}}">{{room.admin_mail}}</a></td>
-                        <td>{{rooms.formatDateTime(room.date_created)}}</td>
+                    <tr ng-repeat="req in rooms.waiting_requests | filter: rooms.waiting_requests.room_name">
+                        <td>{{req.room_name}}</td>
+                        <td>{{req.username}}</td>
+                        <td><a ng-href="mailto:{{req.user_mail}}">{{req.user_mail}}</a></td>
                         <td>
-                            <button type="button" class="btn btn-primary"  ng-click="rooms.join_room(room._id)">
-                                Join <span class="glyphicon glyphicon-edit"> </span>
+                            <button type="button" class="btn btn-primary"  ng-click="rooms.confirm(req.userId, req.roomId)">
+                                Confirm <span class="glyphicon glyphicon-ok"> </span>
                             </button>
                         </td>
                     </tr>

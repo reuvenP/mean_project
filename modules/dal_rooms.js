@@ -38,10 +38,15 @@ var getRoomById = function (roomId, then) {
     Room.findById(roomId, then);
 };
 
+var getRoomsByAdmin = function (adminId, then) {
+    Room.find({admin: adminId}, then);
+};
+
 var exporter = {};
 exporter.addRoom = addRoom;
 exporter.getRooms = getRooms;
 exporter.getLastTwentyMsgsOfRoom = getLastTwentyMsgsOfRoom;
 exporter.getMsgsByRoom = getMsgsByRoom;
 exporter.getRoomById = getRoomById;
+exporter.getRoomsByAdmin = getRoomsByAdmin;
 module.exports = exporter;

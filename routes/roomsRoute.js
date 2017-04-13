@@ -99,4 +99,47 @@ router.post('/add_room/:roomName', function (req, res, next) {
     });
 });
 
+router.get('/getWaitingRequests', function (req, res, next) {
+    if (!req.user) {
+        return res.status(401).send('You must login first');
+    }
+
+    userRooms.getRequestsOfUser(req.user._id, function (err, reqs) {
+        if (err) {
+            return res.status(500).send(error);
+        }
+        var toSend = [];
+        for (var i = 0; i < reqs.length; i++) {
+            toSend.push({_id: reqs[i]._id, room_name: reqs[i].roomId.name, username: reqs[i].userId.name, user_mail: reqs[i].userId.email, roomId: reqs[i].roomId._id, userId: reqs[i].userId._id});
+        }
+        res.json(toSend);
+    });
+});
+
+router.post('/confirm', function (req, res, next) {
+    if (!req.user) {
+        return res.status(401).send('You must login first');
+    }
+
+    var request = req.body.request;
+    rooms.getRoomById(request.roomId, function (err, room) {
+        if (err) {
+            return res.status(500).send(err);
+        }
+
+        //TODO: compare id
+        /*
+        if (room.admin != req.user._id) {
+            return res.status(401).send('You are not admin of this room');
+        }
+        */
+        userRooms.confirmRoomUser(request.userId, request.roomId, function (error) {
+            if (error) {
+                return res.status(500).send(error);
+            }
+            res.status(200).send('OK');
+        })
+    })
+});
+
 module.exports = router;

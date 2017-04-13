@@ -66,8 +66,17 @@ var confirmRoomUser = function (userId, roomId, then) {
     })
 };
 
-var pendingRequests = function (adminId, then) {
-    //TODO:
+var getRequestsOfUser = function (userId, then) {
+    dal_rooms.getRoomsByAdmin(userId, function (err, rooms) {
+        if (err) return then(err, []);
+
+        roomsId = [];
+        for (var i = 0; i < rooms.length; i++) {
+            roomsId.push(rooms[i]._id);
+        }
+
+        UserRooms.find({'roomId': {$in: roomsId}, isConfirmed: false}).populate('roomId').populate('userId').exec(then);
+    });
 };
 
 var exporter = {};
@@ -76,5 +85,6 @@ exporter.getRoomsOfUser = getRoomsOfUser;
 exporter.confirmRoomUser = confirmRoomUser;
 exporter.getPendingRoomsOfUser = getPendingRoomsOfUser;
 exporter.getAvailableRoomsOfUser = getAvailableRoomsOfUser;
+exporter.getRequestsOfUser = getRequestsOfUser;
 
 module.exports = exporter;

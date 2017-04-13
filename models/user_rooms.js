@@ -4,6 +4,11 @@
 var mongo = require("mongoose");
 var Schema = mongo.Schema;
 var debug = require("debug")("sess:user");
+require('./user');
+require('./room');
+mongo.model('User');
+mongo.model('Room');
+
 
 var userConnStr = 'mongodb://localhost/project';
 var db = mongo.createConnection();
@@ -20,8 +25,8 @@ db.open(userConnStr);
 
 var ObjectId = Schema.ObjectId;
 var UserRooms = db.model('UserRooms', new Schema({
-    roomId: {type: ObjectId, required: true},
-    userId: {type: ObjectId, required: true},
+    roomId: {type: ObjectId, required: true, ref: 'Room'},
+    userId: {type: ObjectId, required: true, ref: 'User'},
     counter: Number,
     isConfirmed: Boolean
 }).index({roomId: 1, userId: 1}, { unique: true }));

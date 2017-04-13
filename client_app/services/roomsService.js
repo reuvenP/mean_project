@@ -5,7 +5,7 @@ angular.module('myApp').factory('roomsService', ['$http', '$q', '$rootScope', ro
 function roomsService($http, $q, $rootScope) {
     var services = {};
     services.my_rooms = [];
-    services.my_admin_rooms = [];
+    services.waiting_requests = [];
     services.my_pending_rooms = [];
     services.other_rooms = [];
 
@@ -64,6 +64,7 @@ function roomsService($http, $q, $rootScope) {
         getMyOtherRooms();
         getMyPendingRooms();
         getMyRooms();
+        getWaitingRequests();
     };
 
     var join_room = function (roomId) {
@@ -92,11 +93,48 @@ function roomsService($http, $q, $rootScope) {
         return deferred.promise;
     };
 
+    var getWaitingRequests = function () {
+        services.waiting_requests.length = 0;
+        var deferred = $q.defer();
+        $http.get('/rooms/getWaitingRequests').then(
+            function (res) {
+                for (var i = 0; i < res.data.length; i++) {
+                    services.waiting_requests[i] = res.data[i];
+                }
+                deferred.resolve();
+            }, function (res) {
+                deferred.reject(res);
+            }
+        );
+
+        return deferred.promise;
+    };
+
+    var confirm = function (userId, roomId) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'POST',
+            url: '/rooms/confirm',
+            data: { request: {userId: userId, roomId: roomId} }
+        };
+        $http(req).then(
+            function (res) {
+                deferred.resolve(res.data);
+            }, function (res) {
+                deferred.reject(res);
+            }
+        );
+
+        return deferred.promise;
+    };
+
     services.getMyPendingRooms = getMyPendingRooms;
     services.getMyRooms = getMyRooms;
     services.getMyOtherRooms = getMyOtherRooms;
     services.refreshRoomsLists = refreshRoomsLists;
     services.join_room = join_room;
     services.addRoom = addRoom;
+    services.getWaitingRequests = getWaitingRequests;
+    services.confirm = confirm;
     return services;
 }
