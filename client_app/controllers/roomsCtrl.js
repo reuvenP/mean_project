@@ -54,10 +54,38 @@ function roomsController($scope, pageService, roomsService, usersService, chatSe
         )
     };
 
-    roomsService.getMyRooms();
-    roomsService.getMyPendingRooms();
-    roomsService.getMyOtherRooms();
-    roomsService.getWaitingRequests();
+    roomsService.getMyRooms().then(
+        function (res) {
+            pageService.clearAlert();
+        },
+        function (res) {
+            pageService.showResponseError(res);
+        }
+    );
+    roomsService.getMyPendingRooms().then(
+        function (res) {
+            pageService.clearAlert();
+        },
+        function (res) {
+            pageService.showResponseError(res);
+        }
+    );
+    roomsService.getMyOtherRooms().then(
+        function (res) {
+            pageService.clearAlert();
+        },
+        function (res) {
+            pageService.showResponseError(res);
+        }
+    );
+    roomsService.getWaitingRequests().then(
+        function (res) {
+            pageService.clearAlert();
+        },
+        function (res) {
+            pageService.showResponseError(res);
+        }
+    );
 
     pageService.setPageTitle('Rooms Management');
 
