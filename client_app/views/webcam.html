@@ -2,8 +2,11 @@
     <div ng-repeat="pic in webcam.images">
         <div class='col-sm-6'>
             <div class="box box-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title">{{pic.header}}</h3>
+                </div>
                 <div class="box-body">
-                    <img src="{{pic}}" class="img-responsive img-rounded detailimage" alt="" style="height: 300px"/>
+                    <img src="{{pic.url}}" class="img-responsive img-rounded detailimage" alt="" style="height: 300px"/>
                 </div>
             </div>
         </div>
