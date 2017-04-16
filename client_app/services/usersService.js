@@ -99,6 +99,10 @@ function usersService($http, $q, $uibModal) {
         }
     };
 
+    var getVotesOfUser = function(userId) {
+        return $http.get('/users/votesOfUser/' + userId); //returns the promise
+    };
+
     var openUserEditModal = function(user /*, $scope*/) {
         var modal = $uibModal.open({
             animation: true,
@@ -124,6 +128,7 @@ function usersService($http, $q, $uibModal) {
     services.editUser = editUser;
     services.getUserById = getUserById;
     services.openUserEditModal = openUserEditModal;
+    services.getVotesOfUser = getVotesOfUser;
 
     return services;
 }

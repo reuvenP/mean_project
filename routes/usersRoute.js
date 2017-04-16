@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var users = require('../modules/dal_users');
+var dal_users = require('../modules/dal_users');
+var dal_msgs = require('../modules/dal_messages');
 var rsa = require('../modules/rsa');
 var debug = require('debug')('nodejs-project:users');
 
@@ -14,7 +15,7 @@ router.get('/getUsers', function (req, res, next) {
         return res.status(401).send('You must login first');
     }
 
-    users.getUsers(!req.user.isAdmin, function (error, users) {
+    dal_users.getUsers(!req.user.isAdmin, function (error, users) {
         if (error) {
             return res.status(500).send(error);
         }
@@ -24,7 +25,7 @@ router.get('/getUsers', function (req, res, next) {
 });
 
 router.get('/getUser/:userId', function (req, res, next) {
-    users.getUserById(req.params.userId, function (error, user) {
+    dal_users.getUserById(req.params.userId, function (error, user) {
         if (error) {
             return res.status(500).send(error);
         }
@@ -82,7 +83,7 @@ router.put('/editUser/:userId', checkLoggedIn, checkAdminOrSelfOperation, valida
         delete(user.isAdmin);
         delete(user.isBlocked);
     }
-    users.editUser(user, function(error, newUser) {
+    dal_users.editUser(user, function(error, newUser) {
         if (error) {
            return res.status(500).send(error);
         }
@@ -109,7 +110,7 @@ function validateUser(req, res, next) {
 }
 
 router.delete('/deleteUser/:userId', checkDeletePermission, function (req, res, next) {
-    users.deleteUser(req.params.userId, function(error) {
+    dal_users.deleteUser(req.params.userId, function(error) {
         if (error) {
             return res.status(500).send(error);
         }
@@ -127,13 +128,22 @@ router.post('/addUser', validateUser, function(req, res, next) {
         return res.status(500).send("Password cannot be empty!");
     }
 
-    users.addUser(user, function(error, newUser) {
+    dal_users.addUser(user, function(error, newUser) {
         if (error) {
             return res.status(500).send(error);
         }
         delete(newUser._doc.password);
         delete(newUser._doc.recoveryNumber);
         return res.json(newUser);
+    });
+});
+
+router.get('/votesOfUser/:userId', checkLoggedIn, function (req, res, next) {
+    dal_msgs.getVotesOfUser(req.params.userId, function (error, positive, negative) {
+        if (error) {
+            return res.status(500).send(error);
+        }
+        res.json({positive: positive, negative: negative});
     });
 });
 

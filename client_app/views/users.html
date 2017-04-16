@@ -28,7 +28,7 @@
                     </tr>
                     <tr ng-repeat="user in users.usersList | filter: (!users.mainData.myUser.isAdmin ? {isBlocked:false} : '') | filter: users.searchFilter | orderBy:'apartment'">
                         <td>{{user.apartment}}</td>
-                        <td><a href="javascript:void(0)">{{user.name}}</a></td>
+                        <td><a ng-attr-href="#/user/{{user._id}}">{{user.name}}</a></td>
                         <td>{{user.email}}</td>
                         <td>{{user.username}}</td>
                         <td><span ng-attr-class="{{user.isAdmin && 'glyphicon glyphicon-ok'}}"></span></td>
