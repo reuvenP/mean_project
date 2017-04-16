@@ -21,7 +21,7 @@ function chatService($http, $q, $rootScope, roomsService) {
         }
     };
 
-    services.getRooms = function () {
+    services.getMyRooms = function () {
         var promise = roomsService.getMyRooms();
         promise.then(function() {
             for (var i = 0; i < roomsService.my_rooms.length; i++) { //those rooms are referenced by services.rooms
@@ -32,7 +32,7 @@ function chatService($http, $q, $rootScope, roomsService) {
         return promise;
     };
 
-    var getRoomOfflineMessages = function (roomId) {
+    var getLastOfflineMessages = function (roomId) {
         var deferred = $q.defer();
         $http.get('/chat/lastTwentyMessages/' + roomId).then(
             function (res) {
@@ -53,7 +53,7 @@ function chatService($http, $q, $rootScope, roomsService) {
 
     services.connectToRoom = function(roomId, scope, newMsgCallback) {
         var deferred = $q.defer();
-        getRoomOfflineMessages(roomId).then(
+        getLastOfflineMessages(roomId).then(
             function (res) {
                 socket.emit('join', roomId);
                 var handler = $rootScope.$on('new_msg', newMsgCallback);
@@ -183,6 +183,20 @@ function chatService($http, $q, $rootScope, roomsService) {
         if (!roomId) return;
         socket.emit('leave', roomId);
         services.getRoom(roomId).messages.length = 0;
+    };
+
+    services.getAllMessages = function(roomId) {
+        var promise = $http.get('/chat/allMessages/' + roomId);
+        promise.then(function (res) {
+            var messagesList = services.getRoom(roomId).messages;
+            messagesList.length = 0;
+            var loadedMessages = res.data;
+            for (var i = 0; i < loadedMessages.length; i++) {
+                messagesList[i] = loadedMessages[i];
+            }
+        });
+
+        return promise;
     };
 
     return services;

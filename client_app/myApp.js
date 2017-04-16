@@ -44,6 +44,12 @@ app.config(function ($routeProvider) {
             controllerAs: 'webcam'
         })
 
+        .when('/search', {
+            templateUrl: '/client_app/views/search.html',
+            controller: 'searchCtrl',
+            controllerAs: 'search'
+        })
+
         .otherwise({
             redirect: '/'
         });

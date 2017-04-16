@@ -46,6 +46,19 @@ router.get('/lastTwentyMessages/:roomId', function(req, res, next) {
     })
 });
 
+router.get('/allMessages/:roomId', function(req, res, next) {
+    if (!req.user) {
+        return res.status(401).send('You must login first for using the chat');
+    }
+
+    dal_rooms.getMsgsByRoom(req.params.roomId, function(error, messages) {
+        if (error) {
+            return res.status(500).send(error);
+        }
+        res.json(messages);
+    })
+});
+
 router.post('/likeMessage/:messageId', function(req, res, next) {
     if (!req.user) {
         return res.status(401).send('Not logged-in');

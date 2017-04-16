@@ -167,7 +167,7 @@ function chatController($scope, $timeout, pageService, chatService, usersService
 
     usersService.refreshUsers().then(
         function() {
-            chatService.getRooms().then(
+            chatService.getMyRooms().then(
                 function(res) {
                     pageService.clearAlert();
                 },
