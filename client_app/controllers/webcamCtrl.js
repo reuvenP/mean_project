@@ -8,6 +8,13 @@ function webcamController($scope, pageService, webcamService) {
     vm.mainData = pageService.mainData;
     vm.images = webcamService.images;
 
-    webcamService.getWebcams();
+    webcamService.getWebcams().then(
+        function (res) {
+            pageService.clearAlert();
+        },
+        function (res) {
+            pageService.showResponseError(res);
+        }
+    )
 
 }
