@@ -9,6 +9,8 @@ function searchCtrl(pageService, chatService, usersService) {
     vm.searchFilter = {};
 
     vm.selectedRoomChanged = function() {
+        vm.messages = [];
+        vm.loading = true;
         chatService.getAllMessages(vm.selectedRoom).then(
             function() {
                 vm.messages = chatService.getRoom(vm.selectedRoom).messages;
@@ -17,7 +19,9 @@ function searchCtrl(pageService, chatService, usersService) {
             function (res) {
                 pageService.showResponseError(res);
             }
-        )
+        ).finally(function() {
+            vm.loading = false;
+        })
     };
 
     vm.senderImage = function(senderId) {
@@ -51,6 +55,14 @@ function searchCtrl(pageService, chatService, usersService) {
             toDate.setDate(toDate.getDate() + 1);
             return testDate < toDate;
         }
+    };
+
+    vm.likeMessage = function(message) {
+        chatService.likeMessage(message._id, vm.selectedRoom);
+    };
+
+    vm.dislikeMessage = function(message) {
+        chatService.dislikeMessage(message._id, vm.selectedRoom);
     };
 
     pageService.setPageTitle('Rooms Search', 'Find messages inside rooms');

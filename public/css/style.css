@@ -41,3 +41,8 @@
 .direct-chat-msg.right li:first-child {
     padding-left: 12px;
 }
+
+.table-msgs .user-block .username {
+    font-size: 14px;
+    font-weight: 400;
+}

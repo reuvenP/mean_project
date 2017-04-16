@@ -6,6 +6,9 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
+                <div ng-show="search.loading" class="overlay">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
                 <div class="form-group col-md-3">
                     <label>Room:</label>
                     <div class="input-group">
@@ -44,19 +47,39 @@
                         <input type="text" name="table_search" ng-model="search.searchFilter.text" class="form-control" placeholder="Search by text">
                     </div>
                 </div>
-                <table class="table table-hover">
+                <table class="table table-hover table-msgs" id="table-msgs">
                     <tbody>
                     <tr>
-                        <th></th>
-                        <th>Name</th>
+                        <th>User</th>
                         <th>Time</th>
                         <th>Message</th>
+                        <th>Likes/Unlikes:</th>
                     </tr>
                     <tr ng-repeat="message in search.messages | filter: search.searchFilter | filter:search.dateRangeFilter">
-                        <td><img class="direct-chat-img" ng-attr-src="{{search.senderImage(message.sender)}}"/></td>
-                        <td>{{search.senderName(message.sender)}}</td>
+                        <td class="user-block">
+                                <img class="img-circle img-bordered-md" ng-attr-src="{{search.senderImage(message.sender)}}" alt="user image">
+                                <span class="username">
+                          <a href="javascript:;">{{search.senderName(message.sender)}}</a>
+                        </span>
+                        </td>
                         <td>{{search.formatDateTime(message.submitDate)}}</td>
                         <td><p ng-bind-html="message.text"></p></td>
+                        <td>
+                            <ul class="list-inline" style="color: #666;">
+                                <li><a href="javascript:;" class="link-black" ng-click="search.likeMessage(message)">
+                                    <i class="fa fa-thumbs-o-up margin-r-5"></i></a>
+                                    {{message.positiveVotes}}
+                                </li>
+                                <li><a href="javascript:;" class="link-black" ng-click="search.dislikeMessage(message)">
+                                    <i class="fa fa-thumbs-o-down margin-r-5"></i></a>
+                                    {{message.negativeVotes}}
+                                </li>
+                            </ul>
+                            <div class="text-red" ng-show="message.voteError">
+                                <i class="fa fa-exclamation-circle margin-r-5"></i></a>
+                                {{message.voteError}}
+                            </div>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
