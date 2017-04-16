@@ -1,0 +1,68 @@
+<div class="row" ng-show="search.mainData.myUser">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Search Rooms</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+                <div class="form-group col-md-3">
+                    <label>Room:</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-suitcase"></i>
+                        </div>
+                        <select class="form-control" ng-model="search.selectedRoom" ng-change="search.selectedRoomChanged()">
+                            <option ng-repeat="room in search.rooms" value="{{room._id}}">{{room.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>From Date:</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="text" ng-model="search.fromDate" class="form-control" id="fromDatepicker">
+                    </div>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>To Date:</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="text" ng-model="search.toDate" class="form-control" id="toDatepicker">
+                    </div>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Text Search:</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-search"></i>
+                        </div>
+                        <input type="text" name="table_search" ng-model="search.searchFilter.text" class="form-control" placeholder="Search by text">
+                    </div>
+                </div>
+                <table class="table table-hover">
+                    <tbody>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Time</th>
+                        <th>Message</th>
+                    </tr>
+                    <tr ng-repeat="message in search.messages | filter: search.searchFilter | filter:search.dateRangeFilter">
+                        <td><img class="direct-chat-img" ng-attr-src="{{search.senderImage(message.sender)}}"/></td>
+                        <td>{{search.senderName(message.sender)}}</td>
+                        <td>{{search.formatDateTime(message.submitDate)}}</td>
+                        <td><p ng-bind-html="message.text"></p></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+</div>
