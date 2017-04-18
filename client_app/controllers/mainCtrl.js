@@ -17,6 +17,7 @@ function mainCtrl($scope, pageService, loginService) {
 
     $scope.$on('$locationChangeStart', function(event) {
         pageService.clearAlert();
+        $('.sidebar-menu li').removeClass('active');
     });
 
     loginService.getLoggedInUser().then(

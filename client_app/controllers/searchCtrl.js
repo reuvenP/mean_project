@@ -75,6 +75,7 @@ function searchCtrl($scope, pageService, chatService, usersService) {
     };
 
     pageService.setPageTitle('Rooms Search', 'Find messages inside rooms');
+    $('#searchLink').addClass('active');
 
     $(document).ready(function() {
         $('#fromDatepicker, #toDatepicker').datepicker({
