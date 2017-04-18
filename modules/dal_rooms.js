@@ -19,7 +19,7 @@ var getRooms = function (then) {
     Room.find({}, then);
 };
 
-var getLastTwentyMsgsOfRoom = function (roomId, then) {
+var getLastMsgsOfRoom = function (roomId, then) {
     Message.find({room: roomId, isOnlyForConnected: false},[], {limit: 20, sort: {submitDate: -1}}, function (err, msgs) {
         if (err) return then(err, msgs);
         var newMsgs = [];
@@ -31,7 +31,7 @@ var getLastTwentyMsgsOfRoom = function (roomId, then) {
 };
 
 var getMsgsByRoom = function (roomId, then) {
-    Message.find({room: roomId, isOnlyForConnected: false}, then);
+    Message.find({room: roomId, isOnlyForConnected: false}, [], {sort: {submitDate: 1}}, then);
 };
 
 var getRoomById = function (roomId, then) {
@@ -45,7 +45,7 @@ var getRoomsByAdmin = function (adminId, then) {
 var exporter = {};
 exporter.addRoom = addRoom;
 exporter.getRooms = getRooms;
-exporter.getLastTwentyMsgsOfRoom = getLastTwentyMsgsOfRoom;
+exporter.getLastMsgsOfRoom = getLastMsgsOfRoom;
 exporter.getMsgsByRoom = getMsgsByRoom;
 exporter.getRoomById = getRoomById;
 exporter.getRoomsByAdmin = getRoomsByAdmin;

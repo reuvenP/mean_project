@@ -1,17 +1,26 @@
-angular.module('myApp').controller('searchCtrl', ['pageService', 'chatService', 'usersService', 'roomsService', searchCtrl]);
-function searchCtrl(pageService, chatService, usersService) {
+angular.module('myApp').controller('searchCtrl', ['$scope', 'pageService', 'chatService', 'usersService', searchCtrl]);
+function searchCtrl($scope, pageService, chatService, usersService) {
     var vm = this;
     vm.mainData = pageService.mainData;
-    vm.usersList = usersService.usersList;
     vm.rooms = chatService.rooms;
     vm.messages = [];
     vm.formatDateTime = pageService.formatDateTime;
     vm.searchFilter = {};
 
+    $scope.$on('$locationChangeStart', function(event) { //save search criteria
+        pageService.lastRoomSearch = {
+            selectedRoom: vm.selectedRoom,
+            fromDate: vm.fromDate,
+            toDate: vm.toDate,
+            text: vm.searchFilter.text
+        };
+    });
+
     vm.selectedRoomChanged = function() {
+        if (!vm.selectedRoom) return;
         vm.messages = [];
         vm.loading = true;
-        chatService.getAllMessages(vm.selectedRoom).then(
+        chatService.getRoomMessages(vm.selectedRoom).then(
             function() {
                 vm.messages = chatService.getRoom(vm.selectedRoom).messages;
                 pageService.clearAlert();
@@ -58,11 +67,11 @@ function searchCtrl(pageService, chatService, usersService) {
     };
 
     vm.likeMessage = function(message) {
-        chatService.likeMessage(message._id, vm.selectedRoom);
+        chatService.likeMessage(message);
     };
 
     vm.dislikeMessage = function(message) {
-        chatService.dislikeMessage(message._id, vm.selectedRoom);
+        chatService.dislikeMessage(message);
     };
 
     pageService.setPageTitle('Rooms Search', 'Find messages inside rooms');
@@ -78,6 +87,14 @@ function searchCtrl(pageService, chatService, usersService) {
         function() {
             chatService.getMyRooms().then(
                 function(res) {
+                    if (pageService.lastRoomSearch) { //restore search criteria
+                        vm.selectedRoom = pageService.lastRoomSearch.selectedRoom;
+                        vm.fromDate = pageService.lastRoomSearch.fromDate;
+                        vm.toDate = pageService.lastRoomSearch.toDate;
+                        vm.searchFilter.text =  pageService.lastRoomSearch.text;
+                        delete (pageService.lastRoomSearch);
+                        vm.selectedRoomChanged();
+                    }
                     pageService.clearAlert();
                 },
                 function (res) {

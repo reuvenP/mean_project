@@ -10,6 +10,7 @@ function roomsService($http, $q, $rootScope) {
     services.other_rooms = [];
 
     var getMyRooms = function () {
+        //TODO update the same array but not by deleting and refilling it, so inner messages array is kept
         services.my_rooms.length = 0;
         var deferred = $q.defer();
         $http.get('/rooms/getRoomsOfUser').then(

@@ -12,6 +12,7 @@ function loginService($http, $q, pageService) {
         $http(req).then(
             function(res) {
                 pageService.mainData.myUser = res.data;
+                pageService.createSocket();
                 deferred.resolve(res.data);
             },
             function(res) {
@@ -21,7 +22,8 @@ function loginService($http, $q, pageService) {
         return deferred.promise;
     };
 
-    services.logout = function(username, hashedLogin) {
+    services.logout = function() {
+        pageService.closeSocket();
         var req = {
             method: 'GET',
             url: '/login/exit'
@@ -38,6 +40,7 @@ function loginService($http, $q, pageService) {
         $http(req).then(
             function (res) {
                 pageService.mainData.myUser = res.data;
+                pageService.createSocket();
                 deferred.resolve(res.data);
             }, function (res) {
                 deferred.reject(res);

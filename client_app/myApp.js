@@ -14,6 +14,17 @@ app.config(function ($routeProvider) {
             controllerAs: 'home'
         })
 
+        .when('/user/:userId', {
+            templateUrl: '/client_app/views/userProfile.html',
+            controller: 'userProfileCtrl',
+            controllerAs: 'userProfile',
+            resolve: {
+                userId: function ($route) {
+                    return $route.current.params.userId
+                }
+            }
+        })
+
         .when('/users', {
             templateUrl: '/client_app/views/users.html',
             controller: 'usersController',

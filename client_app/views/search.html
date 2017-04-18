@@ -59,7 +59,7 @@
                         <td class="user-block">
                                 <img class="img-circle img-bordered-md" ng-attr-src="{{search.senderImage(message.sender)}}" alt="user image">
                                 <span class="username">
-                          <a href="javascript:;">{{search.senderName(message.sender)}}</a>
+                          <a ng-attr-href="#/user/{{message.sender}}" >{{search.senderName(message.sender)}}</a>
                         </span>
                         </td>
                         <td>{{search.formatDateTime(message.submitDate)}}</td>

@@ -1,0 +1,119 @@
+<div class="row" ng-show="userProfile.mainData.myUser">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <!-- Profile Image -->
+        <div class="box box-primary">
+            <div class="box-body box-profile">
+                <img class="profile-user-img img-responsive img-circle" ng-attr-src="{{userProfile.user.image}}" ng-cloak alt="User profile picture">
+
+                <h3 class="profile-username text-center">{{userProfile.user.name}}</h3>
+
+                <p ng-show="userProfile.user.apartment" class="text-muted text-center">Apartment {{userProfile.user.apartment}}</p>
+                <ul class="list-group list-group-unbordered">
+                    <li class="list-group-item">
+                        <b>Username:</b> <span class="pull-right">{{userProfile.user.username}}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Email:</b> <a class="pull-right" ng-attr-href="mailto:{{userProfile.user.email}}">{{userProfile.user.email}}</a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Phone:</b> <span class="pull-right">{{userProfile.user.phone}}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Total likes got:</b> <span class="pull-right">{{userProfile.totalPositive}}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Total unlikes got:</b> <span class="pull-right">{{userProfile.totalNegative}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.box -->
+    </div>
+
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Search User Messages</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+                <div ng-show="userProfile.loading" class="overlay">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Room:</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-suitcase"></i>
+                        </div>
+                        <select class="form-control" ng-model="userProfile.selectedRoom" ng-change="userProfile.selectedRoomChanged()">
+                            <option ng-repeat="room in userProfile.rooms" value="{{room._id}}">{{room.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>From Date:</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="text" ng-model="userProfile.fromDate" class="form-control" id="fromDatepicker">
+                    </div>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>To Date:</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="text" ng-model="userProfile.toDate" class="form-control" id="toDatepicker">
+                    </div>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Text Search:</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-search"></i>
+                        </div>
+                        <input type="text" name="table_search" ng-model="userProfile.searchFilter.text" class="form-control" placeholder="Search by text">
+                    </div>
+                </div>
+                <table class="table table-hover table-msgs" id="table-msgs">
+                    <tbody>
+                    <tr>
+                        <th>Room</th>
+                        <th>Time</th>
+                        <th>Message</th>
+                        <th>Likes/Unlikes:</th>
+                    </tr>
+                    <tr ng-repeat="message in userProfile.messages | filter: userProfile.searchFilter | filter:userProfile.dateRangeFilter">
+                        <td class="user-block">
+                            {{userProfile.roomName(message.room)}}
+                        </td>
+                        <td>{{userProfile.formatDateTime(message.submitDate)}}</td>
+                        <td><p ng-bind-html="message.text"></p></td>
+                        <td>
+                            <ul class="list-inline" style="color: #666;">
+                                <li><a href="javascript:;" class="link-black" ng-click="userProfile.likeMessage(message)">
+                                    <i class="fa fa-thumbs-o-up margin-r-5"></i></a>
+                                    {{message.positiveVotes}}
+                                </li>
+                                <li><a href="javascript:;" class="link-black" ng-click="userProfile.dislikeMessage(message)">
+                                    <i class="fa fa-thumbs-o-down margin-r-5"></i></a>
+                                    {{message.negativeVotes}}
+                                </li>
+                            </ul>
+                            <div class="text-red" ng-show="message.voteError">
+                                <i class="fa fa-exclamation-circle margin-r-5"></i></a>
+                                {{message.voteError}}
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+</div>
