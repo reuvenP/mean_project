@@ -6,6 +6,7 @@ function homeCtrl($scope, $timeout, $routeParams, chatService, pageService, user
         function() {
             bulletinService.getBulletin().then(
                 function(res) {
+                    afterAddingMessages();
                     pageService.clearAlert();
                 },
                 function (res) {
@@ -20,6 +21,15 @@ function homeCtrl($scope, $timeout, $routeParams, chatService, pageService, user
     vm.bulletin = bulletinService.bulletin;
     pageService.setPageTitle('Home');
     $('#homeLink').addClass('active');
+
+    var afterAddingMessages = function() {
+        $timeout(function() {
+            //remove ugly tooltip (huge url of image) after rendering, and scroll down
+            $('#bulletin img').removeAttr('title');
+            var body = $('#bulletin .direct-chat-messages');
+            body.scrollTop(body[0].scrollHeight - body[0].clientHeight);
+        }, 0);
+    };
 
     var buildImageButton = function(roomId) {
         return {
@@ -53,7 +63,7 @@ function homeCtrl($scope, $timeout, $routeParams, chatService, pageService, user
                 fa: true
             },
             customTemplates: buildImageButton('bulletin') //for loading our custom image button
-        })
+        });
     },0);
 
     if ($routeParams.operation === 'editUser') {
@@ -81,9 +91,11 @@ function homeCtrl($scope, $timeout, $routeParams, chatService, pageService, user
             text: html
         };
 
-        bulletinService.addBulletin(message);
+        bulletinService.addBulletin(message).then(function() {
+            afterAddingMessages();
+            pageService.clearAlert();
+        });
         htmlArea.html("");
-        pageService.clearAlert();
     };
 
     vm.senderName = function(senderId) {

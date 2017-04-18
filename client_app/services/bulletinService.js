@@ -24,7 +24,7 @@ function bulletinService($http, $q, $rootScope) {
     };
 
     var refreshBulletin = function () {
-        getBulletin();
+        return getBulletin();
     };
 
     var join_room = function (roomId) {
@@ -49,8 +49,9 @@ function bulletinService($http, $q, $rootScope) {
         };
         $http(req).then(
             function (res) {
-                deferred.resolve(res.data);
-                refreshBulletin();
+                refreshBulletin().then(function () {
+                    deferred.resolve(res.data);
+                });
             }, function (res) {
                 deferred.reject(res);
             }
