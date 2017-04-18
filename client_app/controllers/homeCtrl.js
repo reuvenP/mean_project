@@ -9,11 +9,10 @@ function homeCtrl($scope, $timeout, $routeParams, chatService, pageService, user
                     pageService.clearAlert();
                 },
                 function (res) {
-                    pageService.showResponseError(res);
+
                 }
             )
         }, function (res) {
-            pageService.showResponseError(res);
         }
     );
 
