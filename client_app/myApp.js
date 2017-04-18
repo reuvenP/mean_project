@@ -43,6 +43,12 @@ app.config(function ($routeProvider) {
             controllerAs: 'home'
         })
 
+        .when('/home', {
+            templateUrl: '/client_app/views/home.html',
+            controller: 'homeCtrl',
+            controllerAs: 'home'
+        })
+
         .when('/rooms', {
             templateUrl: '/client_app/views/rooms.html',
             controller: 'roomsController',

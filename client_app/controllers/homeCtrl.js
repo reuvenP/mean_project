@@ -3,8 +3,8 @@ function homeCtrl($scope, $routeParams, pageService, usersService) {
     var vm = this;
     vm.mainData = pageService.mainData;
     pageService.setPageTitle('Dashboard');
+    $('#homeLink').addClass('active');
 
-    $.getScript("/public/js/pages/dashboard2.js");
 
     if ($routeParams.operation === 'editUser') {
         var modal = usersService.openUserEditModal(angular.copy(vm.mainData.myUser));
