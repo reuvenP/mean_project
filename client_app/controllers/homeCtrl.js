@@ -1,6 +1,23 @@
 angular.module('myApp').controller('homeCtrl', ['$scope', '$timeout', '$routeParams', 'chatService', 'pageService', 'usersService', 'bulletinService', homeCtrl]);
 function homeCtrl($scope, $timeout, $routeParams, chatService, pageService, usersService, bulletinService) {
     var vm = this;
+
+    usersService.refreshUsers().then(
+        function() {
+            chatService.getMyRooms().then(
+                function(res) {
+                    pageService.clearAlert();
+                },
+                function (res) {
+                    pageService.showResponseError(res);
+                }
+            )
+        }, function (res) {
+            pageService.showResponseError(res);
+        }
+    );
+
+
     vm.mainData = pageService.mainData;
     vm.bulletin = bulletinService.bulletin;
     pageService.setPageTitle('Dashboard');
@@ -57,6 +74,7 @@ function homeCtrl($scope, $timeout, $routeParams, chatService, pageService, user
         if (senderId) {
             return usersService.getUserById(senderId).name;
         }
+        return '';
     };
 
     vm.formatDateTime = pageService.formatDateTime;
