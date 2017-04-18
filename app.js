@@ -67,6 +67,7 @@ var users = require('./routes/usersRoute');
 var chat = require('./routes/chatRoute');
 var rooms = require('./routes/roomsRoute');
 var webcams = require('./routes/webcamRoute');
+var bulletin = require('./routes/bulletinRoute');
 
 app.use('/', root);
 app.use('/login', login);
@@ -74,6 +75,7 @@ app.use('/users', users);
 app.use('/chat', chat);
 app.use('/rooms', rooms);
 app.use('/webcams', webcams);
+app.use('/bulletin', bulletin);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

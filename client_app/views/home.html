@@ -1,13 +1,38 @@
-<div ng-show="home.mainData.myUser">
-    <div class="box box-warning direct-chat direct-chat-warning col-sm-12">
+<div class="chatrooms " ng-show="home.mainData.myUser">
+    <div class="box box-warning" >
+        <div class="direct-chat direct-chat-warning col-sm-12" id="bulletin">
         <div class="box-header with-border">
             <h3 class="box-title">Bulletin Board</h3>
             <div class="box-body">
                 <div class="direct-chat-messages">
-
+                    <div ng-repeat="message in home.bulletin" class="direct-chat-msg right">
+                        <div class="direct-chat-info clearfix">
+                            <span class="direct-chat-name pull-right">{{home.senderName(message.sender)}}</span>
+                            <span class="direct-chat-timestamp pull-left"> {{ home.formatDateTime(message.submitDate) }}</span>
+                        </div>
+                        <img class="direct-chat-img" ng-attr-src="{{home.senderImage(message.sender)}}"
+                             alt="message user image"><!-- /.direct-chat-img -->
+                        <div class="direct-chat-text">
+                            <p ng-bind-html="message.text"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer" ng-show="home.mainData.myUser.isAdmin">
+                <div style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"
+                     class="form-group htmlarea">
+                </div>
+                <div class="form-group checkbox">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-warning btn-flat" ng-click="home.addBulletin()">
+                            Send &nbsp;
+                            <span class="glyphicon glyphicon-send"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </div>
 <div ng-show="!home.mainData.myUser">
