@@ -22,6 +22,23 @@ function homeCtrl($scope, $timeout, $routeParams, chatService, pageService, user
     pageService.setPageTitle('Home');
     $('#homeLink').addClass('active');
 
+    var buildImageButton = function(roomId) {
+        return {
+            image : function(context) {
+                var locale = context.locale;
+                var options = context.options;
+                var htmlButton =
+                    '<li>' +
+                    '<label class="btn btn-sm btn-default" title="Insert image" tabindex="-1">' +
+                    '<span class="fa fa-file-image-o"></span>' +
+                    '<input type="file" style="display: none;" name="imageFile" id="imageFile" onchange="insertImage(\'' + roomId + '\')">' +
+                    '</label>' +
+                    '</li>';
+                return htmlButton;
+            }
+        };
+    };
+
     $timeout(function () {
         $('#bulletin .htmlarea').wysihtml5({
             toolbar: {
@@ -35,7 +52,8 @@ function homeCtrl($scope, $timeout, $routeParams, chatService, pageService, user
                 "blockquote": false, //Blockquote
                 "size": 'sm', //default: none, other options are xs, sm, lg
                 fa: true
-            }
+            },
+            customTemplates: buildImageButton('bulletin') //for loading our custom image button
         })
     },0);
 
