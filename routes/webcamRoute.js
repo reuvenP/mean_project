@@ -17,9 +17,9 @@ router.get('/webcamsURL', function(req, res, next) {
         {header: 'Control', url: 'http://41.160.227.150:8083/mjpg/video.mjpg?COUNTER'},
         {header: 'Buffet', url: 'http://88.190.98.55/mjpg/video.mjpg?COUNTER'},
         {header: 'Avenue', url: 'http://220.240.123.205/mjpg/video.mjpg?COUNTER'},
-        {header: 'Bar', url: 'http://83.40.74.116:81/mjpg/video.mjpg?COUNTER'},
         {header: 'Church', url: 'http://194.46.230.57:1024/mjpg/video.mjpg?COUNTER'},
-        {header: 'Lab', url: 'http://138.234.104.28:8080/mjpg/video.mjpg?COUNTER'}
+        {header: 'Lab', url: 'http://138.234.104.28:8080/mjpg/video.mjpg?COUNTER'},
+        {header: 'Beach', url: 'http://31.168.248.120/mjpg/video.mjpg?COUNTER'}
     ];
 
     res.json(webcams);
