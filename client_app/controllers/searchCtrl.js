@@ -74,7 +74,7 @@ function searchCtrl($scope, pageService, chatService, usersService) {
         chatService.dislikeMessage(message);
     };
 
-    pageService.setPageTitle('Rooms Search', 'Find messages inside rooms');
+    pageService.setPageTitle('Messages Search', 'Find messages inside rooms');
     $('#searchLink').addClass('active');
 
     $(document).ready(function() {
