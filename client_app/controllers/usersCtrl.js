@@ -6,6 +6,7 @@ function usersController($scope, pageService, usersService) {
     vm.searchFilter = {};
 
     pageService.setPageTitle('Neighbors');
+    $('#usersLink').addClass('active');
 
     usersService.refreshUsers().then(
         function (res) {

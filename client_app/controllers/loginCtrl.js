@@ -4,7 +4,6 @@ function loginCtrl($scope, pageService, usersService, loginService){
     vm.mainData = pageService.mainData;
     pageService.setPageTitle('Login');
     vm.rememberMe = true; //default
-    $('.side-nav li').removeClass('active');
 
     vm.login = function() {
         if (!vm.username) {

@@ -12,6 +12,7 @@ function chatController($scope, $timeout, pageService, chatService, usersService
     });
 
     pageService.setPageTitle('Chat Rooms', 'כאן אפשר לבקש כפית סוכר עד מחר');
+    $('#chatLink').addClass('active');
 
     vm.getRoom = function(roomId) {
         return chatService.getRoom(roomId);

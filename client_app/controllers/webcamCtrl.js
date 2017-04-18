@@ -4,6 +4,8 @@
 angular.module('myApp').controller('webcamController', ['$scope', 'pageService', 'webcamService', webcamController]);
 function webcamController($scope, pageService, webcamService) {
     pageService.setPageTitle('Webcams');
+    $('#webcamLink').addClass('active');
+
     var vm = this;
     vm.mainData = pageService.mainData;
     vm.images = webcamService.images;

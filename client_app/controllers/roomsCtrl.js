@@ -88,5 +88,5 @@ function roomsController($scope, pageService, roomsService, usersService, chatSe
     );
 
     pageService.setPageTitle('Rooms Management');
-
+    $('#roomsLink').addClass('active');
 }
