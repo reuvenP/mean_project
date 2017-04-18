@@ -40,19 +40,19 @@ var addVote = function(msg_id, isPositive, ip, then) {
     });
 };
 
-var getMessages = function (then) {
-    Message.find({}, then);
+var getMessagesBySender = function (senderId, then) {
+    Message.find({sender: senderId, isOnlyForConnected: false}, then);
 };
 
 var getMsgsBySenderBetweenDates = function (senderId, date_start, date_end, then) {
-    Message.find({sender: senderId, submitDate: {$gte: date_start, $lte: date_end}}, then);
+    Message.find({sender: senderId, isOnlyForConnected: false, submitDate: {$gte: date_start, $lte: date_end}}, then);
 };
 
 var getVotesOfUser = function (userId, then) {
     if (!userId) {
         return then('user empty', 0, 0);
     }
-    Message.find({sender: userId}, function (err, msgs) {
+    Message.find({sender: userId, isOnlyForConnected: false}, function (err, msgs) {
         if (err) {
             return then(err, 0, 0);
         }
@@ -68,8 +68,7 @@ var getVotesOfUser = function (userId, then) {
 var exporter = {};
 exporter.addMessage = addMessage;
 exporter.addVote = addVote;
-exporter.getMessages = getMessages;
+exporter.getMessagesBySender = getMessagesBySender;
 exporter.getMsgsBySenderBetweenDates = getMsgsBySenderBetweenDates;
 exporter.getVotesOfUser = getVotesOfUser;
 module.exports = exporter;
-

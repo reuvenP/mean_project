@@ -20,7 +20,7 @@ function searchCtrl($scope, pageService, chatService, usersService) {
         if (!vm.selectedRoom) return;
         vm.messages = [];
         vm.loading = true;
-        chatService.getAllMessages(vm.selectedRoom).then(
+        chatService.getRoomMessages(vm.selectedRoom).then(
             function() {
                 vm.messages = chatService.getRoom(vm.selectedRoom).messages;
                 pageService.clearAlert();
@@ -67,11 +67,11 @@ function searchCtrl($scope, pageService, chatService, usersService) {
     };
 
     vm.likeMessage = function(message) {
-        chatService.likeMessage(message._id, vm.selectedRoom);
+        chatService.likeMessage(message);
     };
 
     vm.dislikeMessage = function(message) {
-        chatService.dislikeMessage(message._id, vm.selectedRoom);
+        chatService.dislikeMessage(message);
     };
 
     pageService.setPageTitle('Rooms Search', 'Find messages inside rooms');

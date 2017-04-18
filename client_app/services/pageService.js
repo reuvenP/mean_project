@@ -95,5 +95,26 @@ function pageService($http, $q, $uibModal) {
             ('00' + date.getHours()).slice(-2) + ':' + ('00' + date.getMinutes()).slice(-2);
     };
 
+    var socket = null;
+
+    services.createSocket = function() {
+        socket = io();
+        return socket;
+    };
+
+    services.getSocket = function() {
+        if (!socket) {
+            socket = io();
+        }
+        return socket;
+    };
+
+    services.closeSocket = function() {
+        if (socket) {
+            socket.emit('disconnect');
+            socket = null;
+        }
+    };
+
     return services;
 }

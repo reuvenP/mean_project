@@ -5,6 +5,12 @@ function chatController($scope, $timeout, pageService, chatService, usersService
     vm.rooms = chatService.rooms;
     vm.formatDateTime = pageService.formatDateTime;
 
+    $scope.$on('$locationChangeStart', function(event) { //disconnect from all rooms when leaving page
+        for (var i = 0; i < vm.rooms.length; i++) {
+            chatService.leaveRoom(vm.rooms[i]._id);
+        }
+    });
+
     pageService.setPageTitle('Chat Rooms', 'כאן אפשר לבקש כפית סוכר עד מחר');
 
     vm.getRoom = function(roomId) {
@@ -41,20 +47,12 @@ function chatController($scope, $timeout, pageService, chatService, usersService
         pageService.clearAlert();
     };
 
-    vm.likeMessage = function(message, room) {
-        chatService.likeMessage(message._id, room._id).then(
-            function(res) {
-                pageService.clearAlert();
-            }
-        )
+    vm.likeMessage = function(message) {
+        chatService.likeMessage(message);
     };
 
-    vm.dislikeMessage = function(message, room) {
-        chatService.dislikeMessage(message._id, room._id).then(
-            function(res) {
-                pageService.clearAlert();
-            }
-        )
+    vm.dislikeMessage = function(message) {
+        chatService.dislikeMessage(message);
     };
 
     var buildImageButton = function(roomId) {
@@ -148,15 +146,6 @@ function chatController($scope, $timeout, pageService, chatService, usersService
         chatService.leaveRoom(room._id);
         room.showRoom = false;
         pageService.clearAlert();
-        // chatService.disconnectFromRoom(room._id).then(
-        //     function() {
-        //         room.showRoom = false;
-        //         pageService.clearAlert();
-        //     },
-        //     function (res) {
-        //         pageService.showResponseError(res);
-        //     }
-        // );
     };
 
     vm.toggleExpanded = function(room) {

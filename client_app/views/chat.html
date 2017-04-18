@@ -42,7 +42,7 @@
                 <!-- Conversations are loaded here -->
                 <div class="direct-chat-messages">
                     <!-- Message. Default to the left -->
-                    <div ng-repeat="message in room.messages"
+                    <div ng-repeat="message in room.messages.last"
                          ng-class="['direct-chat-msg', {'left': chat.isMyMessage(message), 'right': !chat.isMyMessage(message)}]">
                         <div class="direct-chat-info clearfix">
                             <span ng-class="['direct-chat-name', {'pull-left': chat.isMyMessage(message), 'pull-right': !chat.isMyMessage(message)}]">{{chat.senderName(message.sender)}}</span>
@@ -55,11 +55,11 @@
                             <p ng-bind-html="message.text"></p>
                         </div>
                         <ul class="list-inline" style="color: #666;">
-                            <li><a href="javascript:;" class="link-black" ng-click="chat.likeMessage(message, room)">
+                            <li><a href="javascript:;" class="link-black" ng-click="chat.likeMessage(message)">
                                 <i class="fa fa-thumbs-o-up margin-r-5"></i></a>
                                 {{message.positiveVotes}}
                             </li>
-                            <li><a href="javascript:;" class="link-black" ng-click="chat.dislikeMessage(message, room)">
+                            <li><a href="javascript:;" class="link-black" ng-click="chat.dislikeMessage(message)">
                                 <i class="fa fa-thumbs-o-down margin-r-5"></i></a>
                                 {{message.negativeVotes}}
                             </li>

@@ -11,19 +11,19 @@
                 <p ng-show="userProfile.user.apartment" class="text-muted text-center">Apartment {{userProfile.user.apartment}}</p>
                 <ul class="list-group list-group-unbordered">
                     <li class="list-group-item">
-                        <b>Username:</b> <a class="pull-right">{{userProfile.user.username}}</a>
+                        <b>Username:</b> <span class="pull-right">{{userProfile.user.username}}</span>
                     </li>
                     <li class="list-group-item">
-                        <b>Email:</b> <a class="pull-right">{{userProfile.user.email}}</a>
+                        <b>Email:</b> <a class="pull-right" ng-attr-href="mailto:{{userProfile.user.email}}">{{userProfile.user.email}}</a>
                     </li>
                     <li class="list-group-item">
-                        <b>Phone:</b> <a class="pull-right">{{userProfile.user.phone}}</a>
+                        <b>Phone:</b> <span class="pull-right">{{userProfile.user.phone}}</span>
                     </li>
                     <li class="list-group-item">
-                        <b>Total Likes:</b> <a class="pull-right">{{userProfile.totalPositive}}</a>
+                        <b>Total likes got:</b> <span class="pull-right">{{userProfile.totalPositive}}</span>
                     </li>
                     <li class="list-group-item">
-                        <b>Total Unlikes:</b> <a class="pull-right">{{userProfile.totalNegative}}</a>
+                        <b>Total unlikes got:</b> <span class="pull-right">{{userProfile.totalNegative}}</span>
                     </li>
                 </ul>
             </div>
@@ -38,7 +38,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
-                <div ng-show="search.loading" class="overlay">
+                <div ng-show="userProfile.loading" class="overlay">
                     <i class="fa fa-refresh fa-spin"></i>
                 </div>
                 <div class="form-group col-md-3">
@@ -47,7 +47,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-suitcase"></i>
                         </div>
-                        <select class="form-control" ng-model="userProfile.selectedRoom">
+                        <select class="form-control" ng-model="userProfile.selectedRoom" ng-change="userProfile.selectedRoomChanged()">
                             <option ng-repeat="room in userProfile.rooms" value="{{room._id}}">{{room.name}}</option>
                         </select>
                     </div>
@@ -58,7 +58,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <input type="text" ng-model="search.fromDate" class="form-control" id="fromDatepicker">
+                        <input type="text" ng-model="userProfile.fromDate" class="form-control" id="fromDatepicker">
                     </div>
                 </div>
                 <div class="form-group col-md-3">
@@ -67,7 +67,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <input type="text" ng-model="search.toDate" class="form-control" id="toDatepicker">
+                        <input type="text" ng-model="userProfile.toDate" class="form-control" id="toDatepicker">
                     </div>
                 </div>
                 <div class="form-group col-md-3">
@@ -76,33 +76,30 @@
                         <div class="input-group-addon">
                             <i class="fa fa-search"></i>
                         </div>
-                        <input type="text" name="table_search" ng-model="search.searchFilter.text" class="form-control" placeholder="Search by text">
+                        <input type="text" name="table_search" ng-model="userProfile.searchFilter.text" class="form-control" placeholder="Search by text">
                     </div>
                 </div>
                 <table class="table table-hover table-msgs" id="table-msgs">
                     <tbody>
                     <tr>
-                        <th>User</th>
+                        <th>Room</th>
                         <th>Time</th>
                         <th>Message</th>
                         <th>Likes/Unlikes:</th>
                     </tr>
-                    <tr ng-repeat="message in search.messages | filter: search.searchFilter | filter:search.dateRangeFilter">
+                    <tr ng-repeat="message in userProfile.messages | filter: userProfile.searchFilter | filter:userProfile.dateRangeFilter">
                         <td class="user-block">
-                            <img class="img-circle img-bordered-md" ng-attr-src="{{search.senderImage(message.sender)}}" alt="user image">
-                            <span class="username">
-                          <a ng-attr-href="#/user/{{message.sender}}" >{{search.senderName(message.sender)}}</a>
-                        </span>
+                            {{userProfile.roomName(message.room)}}
                         </td>
-                        <td>{{search.formatDateTime(message.submitDate)}}</td>
+                        <td>{{userProfile.formatDateTime(message.submitDate)}}</td>
                         <td><p ng-bind-html="message.text"></p></td>
                         <td>
                             <ul class="list-inline" style="color: #666;">
-                                <li><a href="javascript:;" class="link-black" ng-click="search.likeMessage(message)">
+                                <li><a href="javascript:;" class="link-black" ng-click="userProfile.likeMessage(message)">
                                     <i class="fa fa-thumbs-o-up margin-r-5"></i></a>
                                     {{message.positiveVotes}}
                                 </li>
-                                <li><a href="javascript:;" class="link-black" ng-click="search.dislikeMessage(message)">
+                                <li><a href="javascript:;" class="link-black" ng-click="userProfile.dislikeMessage(message)">
                                     <i class="fa fa-thumbs-o-down margin-r-5"></i></a>
                                     {{message.negativeVotes}}
                                 </li>

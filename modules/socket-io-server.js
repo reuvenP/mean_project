@@ -73,6 +73,10 @@ var configSocketIo = function(httpServer, session) {
                 }
             });
         });
+
+        socket.on('disconnect', function() {
+           socket.disconnect();
+        });
     });
 
 

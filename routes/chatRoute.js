@@ -33,12 +33,12 @@ router.get('/getRooms', function(req, res, next) {
     })
 });
 
-router.get('/lastTwentyMessages/:roomId', function(req, res, next) {
+router.get('/roomLastMessages/:roomId', function(req, res, next) {
     if (!req.user) {
         return res.status(401).send('You must login first for using the chat');
     }
 
-    dal_rooms.getLastTwentyMsgsOfRoom(req.params.roomId, function(error, messages) {
+    dal_rooms.getLastMsgsOfRoom(req.params.roomId, function(error, messages) {
         if (error) {
             return res.status(500).send(error);
         }
@@ -46,12 +46,25 @@ router.get('/lastTwentyMessages/:roomId', function(req, res, next) {
     })
 });
 
-router.get('/allMessages/:roomId', function(req, res, next) {
+router.get('/roomMessages/:roomId', function(req, res, next) {
     if (!req.user) {
-        return res.status(401).send('You must login first for using the chat');
+        return res.status(401).send('You must login first');
     }
 
     dal_rooms.getMsgsByRoom(req.params.roomId, function(error, messages) {
+        if (error) {
+            return res.status(500).send(error);
+        }
+        res.json(messages);
+    })
+});
+
+router.get('/userMessages/:userId', function(req, res, next) {
+    if (!req.user) {
+        return res.status(401).send('You must login first');
+    }
+
+    dal_messages.getMessagesBySender(req.params.userId, function(error, messages) {
         if (error) {
             return res.status(500).send(error);
         }
