@@ -4,7 +4,7 @@ function homeCtrl($scope, $timeout, $routeParams, chatService, pageService, user
 
     usersService.refreshUsers().then(
         function() {
-            chatService.getMyRooms().then(
+            bulletinService.getBulletin().then(
                 function(res) {
                     pageService.clearAlert();
                 },
@@ -17,10 +17,9 @@ function homeCtrl($scope, $timeout, $routeParams, chatService, pageService, user
         }
     );
 
-
     vm.mainData = pageService.mainData;
     vm.bulletin = bulletinService.bulletin;
-    pageService.setPageTitle('Dashboard');
+    pageService.setPageTitle('Home');
     $('#homeLink').addClass('active');
 
     $timeout(function () {
@@ -88,6 +87,4 @@ function homeCtrl($scope, $timeout, $routeParams, chatService, pageService, user
             return 'public/img/user_avatar.png';
         }
     };
-
-    bulletinService.getBulletin();
 }
