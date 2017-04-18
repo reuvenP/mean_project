@@ -3,6 +3,7 @@ var router = express.Router();
 var dal_users = require('../modules/dal_users');
 var dal_msgs = require('../modules/dal_messages');
 var rsa = require('../modules/rsa');
+var validator = require("email-validator");
 var debug = require('debug')('nodejs-project:users');
 
 /* GET users listing. */
@@ -65,7 +66,7 @@ function decryptPassword(encryptedPassword) {
     }
 }
 
-router.put('/editUser/:userId', checkLoggedIn, checkAdminOrSelfOperation, validateUser, function (req, res, next) {
+router.put('/editUser/:userId', checkLoggedIn, checkAdminOrSelfOperation, validateEmail, function (req, res, next) {
     var user = req.body.user;
     delete(user.isDeleted);
     delete(user.password);
@@ -104,8 +105,10 @@ function checkDeletePermission(req, res, next) {
     next();
 }
 
-function validateUser(req, res, next) {
-    //TODO validate user in req.body
+function validateEmail(req, res, next) {
+    if (!validator.validate(req.body.user.email)) {
+        return res.status(500).send('Invalid email address');
+    }
     next();
 }
 
@@ -118,7 +121,7 @@ router.delete('/deleteUser/:userId', checkDeletePermission, function (req, res, 
     });
 });
 
-router.post('/addUser', validateUser, function(req, res, next) {
+router.post('/addUser', validateEmail, function(req, res, next) {
     var user = req.body.user;
     if (!user.isBlocked && (!req.user || !req.user.isAdmin)) {
         return res.status(401).send('Must login with active admin account for adding unblocked users');

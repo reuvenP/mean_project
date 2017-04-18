@@ -10,10 +10,6 @@ function userDetailsCtrl($uibModalInstance, $scope, pageService, user, fileReade
     vm.rawPassword = "";
     vm.userImage = vm.user.image || "public/img/user_avatar.png";
 
-    $uibModalInstance.rendered.then(function () {
-        //$.getScript("/client_app/views/editUserValidator.js");
-    });
-
     vm.onFileSelection = function(file) {
         vm.progress = 0;
         fileReader.readAsDataUrl(file, $scope).then(
