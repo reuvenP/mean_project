@@ -12,10 +12,10 @@ router.get('/webcamsURL', function(req, res, next) {
 
     var webcams = [
         {header: 'Elevator', url: 'http://69.193.149.90:82/mjpg/video.mjpg?COUNTER'},
-        {header: 'Pool', url: 'http://75.151.65.9/mjpg/video.mjpg?COUNTER'},
+        {header: 'Pool', url: 'http://209.12.71.138/mjpg/video.mjpg?COUNTER'},
         {header: 'Lobby', url: 'http://46.146.210.29/mjpg/video.mjpg?COUNTER'},
         {header: 'Control', url: 'http://41.160.227.150:8083/mjpg/video.mjpg?COUNTER'},
-        {header: 'Buffet', url: 'http://88.190.98.55/mjpg/video.mjpg?COUNTER'},
+        {header: 'Buffet', url: 'http://38.101.209.29:8082/mjpg/video.mjpg?COUNTER'},
         {header: 'Avenue', url: 'http://220.240.123.205/mjpg/video.mjpg?COUNTER'},
         {header: 'Lab', url: 'http://138.234.104.28:8080/mjpg/video.mjpg?COUNTER'},
         {header: 'Beach', url: 'http://31.168.248.120/mjpg/video.mjpg?COUNTER'}

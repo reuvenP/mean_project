@@ -1,10 +1,10 @@
 var User = require('./models/user');
 
 User.create({
-    name: 'Dan Zilberstein',
-    username: 'dzilbers',
-    password: '123',
-    email: 'aba4000@gmail.com',
+    name: 'Reuven Plevinsky',
+    username: 'reuven',
+    password: '12345',
+    email: 'plevreuven@gmail.com',
     apartment: 2,
     isAdmin: true
 }, function(err, user) {
